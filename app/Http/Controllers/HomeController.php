@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Participants;
 use App\Models\Poll;
 use App\Models\PollCode;
 use App\Models\User;
@@ -26,10 +27,13 @@ class HomeController extends Controller
     }
     public function dashboard(Request $request){
         $user = $request->user();
-        $polls = DB::table('participants')->select('poll_id')->where('user_id',$user->id);
+        $polls = Poll::select('id')->whereIn('id',Participants::select('poll_id')->where('user_id',$user->id))->orWhere('user_id',$user->id);
 
-        $data['polls'] = Poll::with(['option_groups','participants','poll_code'])->whereIn('id',$polls)->orWhere('user_id',$user->id)->where('is_deleted',false)->get();
-
+        $data['polls'] = Poll::with(['option_groups','participants','poll_code'])->whereIn('id',$polls)->where('is_deleted',false)->get();
+        $data['session'] = [
+            'success' => session('success'),
+            'error' => session('error'),
+        ];
         return Inertia::render('Dashboard',$data);
     }
 
@@ -58,6 +62,10 @@ class HomeController extends Controller
     }
 
     public function profile(Request $request){
-        return Inertia::render('Profile');
+        $data['session'] = [
+            'success'=>session('success'),
+            'error'=>session('error'),
+        ];
+        return Inertia::render('Profile',$data);
     }
 }

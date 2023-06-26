@@ -4,15 +4,22 @@ import ProfilePhoto from '@/Components/ProfilePhoto';
 import TextProfilePic from '@/Components/TextProfilePic';
 import { MultipartHeader } from '@/Helpers';
 import AppLayout from '@/Layouts/AppLayout'
-import { Head } from '@inertiajs/react'
+import { Head, useForm } from '@inertiajs/react'
 import axios from 'axios';
 import React, { useState } from 'react'
-import { Button, Container, Image, Spinner } from 'react-bootstrap';
+import { Button, Card, Container, Form, Image, Spinner } from 'react-bootstrap';
 
 const Profile = ({ auth }) => {
     const [photo, setPhoto] = useState(null)
     const [showImageUploader, setShowImageUploader] = useState(false)
     const [isProcessing, setIsProcessing] = useState(false)
+
+    const { data, setData, processing,patch, errors } = useForm({
+        firstname: auth.user.firstname,
+        lastname: auth.user.lastname,
+        email: auth.user.email,
+        username: auth.user.username,
+    })
 
     const onProfilePicChanged = (imageUrl) => {
         var formData = new FormData()
@@ -27,8 +34,11 @@ const Profile = ({ auth }) => {
                 setIsProcessing(false)
                 auth.user.photo = imageUrl;
             })
+    }
 
-
+    const onInfoSave = (e) => {
+        e.preventDefault();
+        patch(route('profile.update'));
     }
 
     console.log(auth)
@@ -111,6 +121,69 @@ const Profile = ({ auth }) => {
                             </div>
                         </div>
                     </div>
+                    {/* forms below */}
+                    <Card className=' p-xl-4 p-3 bordered-bottom' bg='dark-purple'>
+                        <Card.Body>
+                            <p className='fs-6 text-light'>Update Information</p>
+                            <form onSubmit={onInfoSave} method="post">
+                                <div className="text-end">
+                                    <button className='btn btn-light rounded-2 btn-sm' type='submit'>Save</button>
+                                </div>
+                                <div className="row mb-3 gy-3">
+                                    <div className="col-md">
+                                        <Form.Label className=' text-light fw-bold'>Firstname:</Form.Label>
+                                        <Form.Control
+                                            size='lg'
+                                            className='rounded-1'
+                                            type='text'
+                                            name='firstname'
+                                            value={data.firstname}
+                                            onChange={e => setData('firstname', e.target.value)}
+                                            placeholder='Enter your firstname...'
+                                        />
+                                    </div>
+                                    <div className="col-md">
+                                        <Form.Label className=' text-light fw-bold'>Lastname:</Form.Label>
+                                        <Form.Control
+                                            size='lg'
+                                            className='rounded-1'
+                                            type='text'
+                                            name='lastname'
+                                            value={data.lastname}
+                                            onChange={e => setData('lastname', e.target.value)}
+                                            placeholder='Enter your lastname...'
+                                        />
+                                    </div>
+                                </div>
+                                <div className="row mb-3 gy-3">
+                                    <div className="col-md">
+                                        <Form.Label className=' text-light fw-bold'>Username:</Form.Label>
+                                        <Form.Control
+                                            size='lg'
+                                            className='rounded-1'
+                                            type='text'
+                                            name='username'
+                                            value={data.username}
+                                            onChange={e => setData('username', e.target.value)}
+                                            placeholder='Enter your username...'
+                                        />
+                                    </div>
+                                    <div className="col-md">
+                                        <Form.Label className=' text-light fw-bold'>Email Address:</Form.Label>
+                                        <Form.Control
+                                            size='lg'
+                                            className='rounded-1'
+                                            type='email'
+                                            name='email'
+                                            value={data.email}
+                                            onChange={e => setData('email', e.target.value)}
+                                            placeholder='Enter your email...'
+                                        />
+                                    </div>
+                                </div>
+                            </form>
+                        </Card.Body>
+                    </Card>
                 </Container>
             </section>
         </AppLayout>

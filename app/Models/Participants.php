@@ -18,4 +18,11 @@ class Participants extends Model
     public function user(){
         return $this->belongsTo(User::class,'user_id','id');
     }
+    public function poll(){
+        return $this->belongsTo(Poll::class,'poll_id','id')->with(['poll_code']);
+    }
+
+    public function votes(){
+        return $this->hasMany(Vote::class,'participant_id','id');
+    }
 }

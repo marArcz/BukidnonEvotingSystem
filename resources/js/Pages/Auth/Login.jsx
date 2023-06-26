@@ -7,11 +7,11 @@ import PrimaryButton from '@/Components/PrimaryButton';
 import TextInput from '@/Components/TextInput';
 import { Head, Link, useForm } from '@inertiajs/react';
 import AppLayout from '@/Layouts/AppLayout';
-import { Button, Form, Image } from 'react-bootstrap';
+import { Alert, Button, Form, Image } from 'react-bootstrap';
 import VotingImage from '../../../images/voting (2).png';
 import AppBgOverlay from '@/Components/AppBgOverlay';
 import ImageExt from '../../../images/dark-ext.png'
-export default function Login({ auth, status, canResetPassword }) {
+export default function Login({ auth, status, canResetPassword, session }) {
     const { data, setData, post, processing, errors, reset } = useForm({
         username: '',
         password: '',
@@ -42,7 +42,7 @@ export default function Login({ auth, status, canResetPassword }) {
                                     <Image src={VotingImage} fluid />
                                 </div>
                             </div>
-                            <p className=' mt-3 text-shadow fs-4 col-xl-7 col-12 justify-content-center mx-auto text-uppercase fw-medium'>
+                            <p className=' mt-3 text-shadow fs-4 col-xl-7 col-12 justify-content-center mx-auto text-uppercase text-title fw-medium'>
                                 Bukidnon classic custom voting system
                             </p>
                         </div>
@@ -52,10 +52,16 @@ export default function Login({ auth, status, canResetPassword }) {
                             {/* <img src={ImageExt} alt="" className='img-fluid' /> */}
                             <div className="img-ext"></div>
                         </div>
-                        <div className="row justify-content-center">
+                        <div className="row justify-content-center ">
                             <div className="col-md-8 text-start">
                                 <h1 className=' text-dark text-uppercase mb-4 fw-bolder text-start'>Log In Here</h1>
                                 <div className='w-100'>
+                                    {session.error && (
+                                        // <p className=' fs-5 text-danger'>{session.error}</p>
+                                        <Alert variant='danger' dismissible>
+                                            {session.error}
+                                        </Alert>
+                                    )}
                                     {status && <div className="mb-4 font-medium text-sm text-green-600">{status}</div>}
                                     <form onSubmit={submit}>
                                         <div className='mb-3'>

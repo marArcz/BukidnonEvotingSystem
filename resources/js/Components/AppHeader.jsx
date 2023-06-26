@@ -27,22 +27,22 @@ const AppHeader = ({ auth, removeShadow = false }) => {
                     <Nav className="ms-auto">
                         {
                             auth?.user ? (
-                                <Nav.Link className='text-uppercase mx-lg-3 fs-6 fw-bold link-dark' as={Link} href={route('dashboard')}>Home</Nav.Link>
+                                <Nav.Link className='text-uppercase mx-lg-3 fs-6 link-dark' as={Link} href={route('dashboard')}>Home</Nav.Link>
                             ) : (
-                                <Nav.Link className='text-uppercase mx-lg-3 fs-6 fw-bold link-dark' as={Link} href="/">Home</Nav.Link>
+                                <Nav.Link className='text-uppercase mx-lg-3 fs-6 link-dark' as={Link} href="/">Home</Nav.Link>
                             )
                         }
-                        <Nav.Link className='text-uppercase mx-lg-3 fs-6 fw-bold link-dark' as={Link} href="#link">About</Nav.Link>
-                        <Nav.Link className='text-uppercase mx-lg-3 fs-6 fw-bold link-dark' as={Link} href="#link">Contact</Nav.Link>
+                        <Nav.Link className='text-uppercase mx-lg-3 fs-6 link-dark' as={Link} href="#link">About</Nav.Link>
+                        <Nav.Link className='text-uppercase mx-lg-3 fs-6 link-dark' as={Link} href="#link">Contact</Nav.Link>
 
                         {
                             auth?.user ? (
                                 <>
-                                    <Nav.Link className='text-uppercase mx-lg-2 fs-6 fw-bold link-dark' as={Link} href={route('profile')}>Profile</Nav.Link>
-                                    <Nav.Link className='text-uppercase mx-lg-2 fs-6 fw-bold link-dark' method='post' as={Link} href={route('logout')}>Log out</Nav.Link>
+                                    <Nav.Link className='text-uppercase mx-lg-2 fs-6 link-dark' as={Link} href={route('profile')}>Profile</Nav.Link>
+                                    <Nav.Link className='text-uppercase mx-lg-2 fs-6 link-dark' method='post' as={Link} href={route('logout')}>Log out</Nav.Link>
                                 </>
                             ) : (
-                                <Nav.Link className='text-uppercase mx-lg-3 fs-6 fw-bold link-dark' as={Link} href={route('login')}>Login</Nav.Link>
+                                <Nav.Link className='text-uppercase mx-lg-3 fs-6 link-dark' as={Link} href={route('login')}>Login</Nav.Link>
                             )
                         }
                     </Nav>

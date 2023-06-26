@@ -7,6 +7,9 @@ import PollCountImage from '../../images/poll-count.png';
 import VoterListImage from '../../images/voter-list.png';
 import EndImage from '../../images/end-election.png';
 import AppBgOverlay from '@/Components/AppBgOverlay';
+import { useState } from 'react';
+import { useEffect } from 'react';
+import CountDown from '@/Components/CountDown';
 const Poll = ({ auth, poll }) => {
 
     return (
@@ -25,11 +28,10 @@ const Poll = ({ auth, poll }) => {
                                 </Badge>
                             </div>
                         </div>
-
                         {poll.status == "Live" ? (
-                            <p className=' mb-0 mt-2 text-white-50'>This poll is still ongoing.</p>
+                            <p className='text-white-50 mt-2 mb-0'>This poll is still ongoing.</p>
                         ) : (
-                            <p className=' mb-0 mt-2 text-white-50'>This poll has ended.</p>
+                            <p className=' mb-0 mt-2 mb-0 text-white-50'>This poll has ended.</p>
                         )}
                     </div>
                 </div>
@@ -40,7 +42,22 @@ const Poll = ({ auth, poll }) => {
                     <div className="row mt-3 mt-lg-3 justify-content-center">
                         <div className="col-md-12">
                             <h4 className='text-dark-purple mb-3 fw-bold'>Manage Poll</h4>
-                            <div className="card border bg-white bg-opacity-75 shadow mb-3">
+                            {
+                                poll.status == 'Live' && (
+                                    <>
+                                        <p className='mb-2 text-dark-purple'>This poll will automatically close on:</p>
+
+                                        {
+                                            poll.deadline_date ? (
+                                                <CountDown endDate={new Date(poll.deadline_date)} />
+                                            ) : (
+                                                <p>No deadline</p>
+                                            )
+                                        }
+                                    </>
+                                )
+                            }
+                            <div className="card border bg-white bg-opacity-75 shadow mb-3 mt-3">
                                 <div className="card-body poll-actions">
                                     <div className="row gx-lg-4 gx-3 gy-5">
                                         <div className="col-md-3 col-6">
@@ -48,9 +65,9 @@ const Poll = ({ auth, poll }) => {
                                                 <Image className='mb-2' fluid src={PollImage} />
                                                 <div className="d-grid">
                                                     {
-                                                        poll.status == 'Live'?(
+                                                        poll.status == 'Live' ? (
                                                             <Link href={route('edit_poll', { code: poll.poll_code.code })} className="btn rounded-0 btn-purple-secondary text-light">Edit Poll</Link>
-                                                        ):(
+                                                        ) : (
                                                             <Button variant='dark' className='rounded-0 disabled' type='button' disabled>Edit Poll</Button>
                                                         )
                                                     }

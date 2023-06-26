@@ -3,6 +3,7 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import '../css/custom.css'
 import '../css/app.css';
 import 'react-calendar/dist/Calendar.css';
+import 'react-toastify/dist/ReactToastify.min.css'
 import { createRoot } from 'react-dom/client';
 import { createInertiaApp } from '@inertiajs/react';
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
@@ -22,6 +23,6 @@ createInertiaApp({
         root.render(<App {...props} />);
     },
     progress: {
-        color: '#4B5563',
+        color: '#433BA9',
     },
 });

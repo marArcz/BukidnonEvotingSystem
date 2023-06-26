@@ -98,7 +98,7 @@ const Voting = ({ auth, poll }) => {
             .then((res) => {
                 setIsLoading(false)
                 console.log('res: ', res)
-                window.location = route('voter_poll', { code: poll.poll_code.code });
+                window.location = route('myvote', { code: poll.poll_code.code });
             })
             .catch(err => {
                 setIsLoading(false)
@@ -109,9 +109,9 @@ const Voting = ({ auth, poll }) => {
     return (
         <AppLayout auth={auth} noBg>
             <Head title={poll.title} />
-            <section className="voters-poll pt-5 mt-3 fw-bolder fs-inter">
+            <section className="voters-poll  fw-bolder fs-inter">
                 <div className="bg-purple-secondary w-100 ">
-                    <div className="container pt-3 pb-2 text-center">
+                    <div className="container py-3 text-center">
                         <div className='my-0'>
                             <Image fluid className='my-1' src={PollIcon} />
                         </div>
@@ -124,7 +124,7 @@ const Voting = ({ auth, poll }) => {
 
                 <div className="container mt-3">
                     <button type='button' onClick={() => history.back()} className='btn btn-light border shadow-sm '>
-                        <i className='bx bx-arrow-back'></i>
+                        <i className='bx bxs-home'></i>
                     </button>
                     {/* <div className="row justify-content-center">
                         <div className="col-md-12">

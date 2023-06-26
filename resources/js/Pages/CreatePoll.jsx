@@ -21,6 +21,9 @@ const CreatePoll = ({ auth }) => {
     const [processing, setProcessing] = useState(false)
     const [showCalendar, setShowCalendar] = useState(false)
     const [deadline, setDeadline] = useState(null)
+
+    const months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+
     // initial empty option group
     let newOptionGroup = {
         title: '',
@@ -221,7 +224,7 @@ const CreatePoll = ({ auth }) => {
                                                 name="description"
                                                 value={description}
                                                 className="mt-1 border-secondary"
-                                                placeholder='Add some information about the election'
+                                                placeholder='Add some information about this poll'
                                                 onChange={(e) => setDescription(e.target.value)}
                                             />
                                         </div>
@@ -235,8 +238,8 @@ const CreatePoll = ({ auth }) => {
                                                     id="deadline"
                                                     onClick={() => setShowCalendar(true)}
                                                     name="deadline"
-                                                    value={deadline || 'No Deadline'}
-                                                    className=" border-secondary text-secondary"
+                                                    value={deadline?`${months[deadline.getMonth()]} ${deadline.getDate()<10?`0${deadline.getDate()}`:deadline.getDate()}, ${deadline.getFullYear()}`:'No Deadline'}
+                                                    className={`border-secondary ${deadline?'text-dark':'text-secondary'}`}
                                                     placeholder='Set the deadline for this poll'
                                                 />
                                                 <div>

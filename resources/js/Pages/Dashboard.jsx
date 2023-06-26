@@ -15,14 +15,17 @@ import ModalComponent from '@/Components/ModalComponent';
 import axios from 'axios';
 import { MultipartHeader } from '@/Helpers';
 import ProfilePhoto from '@/Components/ProfilePhoto';
+import { useEffect } from 'react';
+import { toast } from 'react-toastify';
 
-export default function Dashboard({ auth, polls, success,error }) {
+export default function Dashboard({ auth, polls, session }) {
+    const [counter, setCounter] = useState(0)
     const [joinCode, setJoinCode] = useState("")
     const [joinError, setJoinError] = useState("");
 
     const [isProcessing, setIsProcessing] = useState(false)
     const [showJoinModal, setShowJoinModal] = useState(false)
- 
+
     const onJoinSubmit = (e) => {
         e.preventDefault();
         var formData = new FormData();
@@ -34,21 +37,29 @@ export default function Dashboard({ auth, polls, success,error }) {
                 setIsProcessing(false)
                 window.location = route('voter_poll', { code: joinCode })
             })
-            .catch((err) =>{
+            .catch((err) => {
                 setIsProcessing(false)
                 setJoinError(err.response.data.message)
             })
     }
 
-    const onJoinCodeChange = (e) =>{
+    const onJoinCodeChange = (e) => {
         setJoinCode(e.target.value);
         setJoinError("")
     }
 
+    useEffect(() => {
+        setCounter(counter + 1)
+        if (session.success) {
+            toast.success(session.success)
+        }
+    }, [])
+
+
     return (
         <AppLayout auth={auth} noBg>
             <Head title="Dashboard" />
-            <ModalComponent backdrop={isProcessing?'static':"backdrop"} show={showJoinModal} handleClose={() => setShowJoinModal(false)} title="Join Poll">
+            <ModalComponent backdrop={isProcessing ? 'static' : "backdrop"} show={showJoinModal} handleClose={() => setShowJoinModal(false)} title="Join Poll">
                 <form onSubmit={onJoinSubmit}>
                     <div className="mb-3">
                         <Form.Label htmlFor='input-code'>Code:</Form.Label>
@@ -57,7 +68,7 @@ export default function Dashboard({ auth, polls, success,error }) {
                             value={joinCode}
                             onChange={onJoinCodeChange}
                             placeholder='Enter code..'
-                            className={`${joinError != ''?'border-danger':''}`}
+                            className={`${joinError != '' ? 'border-danger' : ''}`}
                             required
                         />
                         <p className=' text-danger mt-2 mb-0'>{joinError}</p>
@@ -75,11 +86,6 @@ export default function Dashboard({ auth, polls, success,error }) {
                     </div>
                 </div>
                 <div className="container overlay-top">
-                    {
-                        success && (
-                            <p>{success}</p>
-                        )
-                    }
                     <div className="row justify-content-center mb-3 mt-2">
                         <div className="col-md-12">
                             <div className="card shadow-sm overlay-card bg-white border rounded-1 p-xl-3 p-3">
@@ -90,7 +96,7 @@ export default function Dashboard({ auth, polls, success,error }) {
                                                 !auth.user.photo ? (
                                                     <TextProfilePic text={auth.user.firstname[0] + auth.user.lastname[0]} />
                                                 ) : (
-                                                    <ProfilePhoto size='md' className="border border-4 shadow-sm" image={auth.user.photo}/>
+                                                    <ProfilePhoto size='md' className="border border-4 shadow-sm" image={auth.user.photo} />
                                                 )
                                             }
                                         </div>
@@ -185,17 +191,24 @@ export default function Dashboard({ auth, polls, success,error }) {
                                                                             </Badge>
                                                                         </div>
                                                                         <div className="col-lg col order-lg-3 order-2 text-center">
-                                                                            <Dropdown className="d-inline mx-2 my-1">
-                                                                                <Dropdown.Toggle bsPrefix='none' className='no-icon dropdown-toggler link-light  btn-link btn-sm ' as="a" id="dropdown-autoclose-true">
-                                                                                    <i className='micon'>more_horiz</i>
-                                                                                </Dropdown.Toggle>
+                                                                            {
+                                                                                poll.user_id == auth.user.id && (
+                                                                                    <Dropdown className="d-inline mx-2 my-1">
+                                                                                        <Dropdown.Toggle bsPrefix='none' className='no-icon dropdown-toggler link-light  btn-link btn-sm ' as="a" id="dropdown-autoclose-true">
+                                                                                            <i className='micon'>more_horiz</i>
+                                                                                        </Dropdown.Toggle>
 
-                                                                                <Dropdown.Menu>
-                                                                                    <Dropdown.Item as={Link} href={route('edit_poll', { code: poll.poll_code.code })}>Edit Poll</Dropdown.Item>
-                                                                                    <Dropdown.Item as={Link} href={route('delete_poll',{code: poll.poll_code.code})} >Delete Poll</Dropdown.Item>
-                                                                                    <Dropdown.Item href="#">Menu Item</Dropdown.Item>
-                                                                                </Dropdown.Menu>
-                                                                            </Dropdown>
+                                                                                        <Dropdown.Menu>
+                                                                                            {
+                                                                                                poll.status == 'Live' && (
+                                                                                                    <Dropdown.Item as={Link} href={route('edit_poll', { code: poll.poll_code.code })}>Edit Poll</Dropdown.Item>
+                                                                                                )
+                                                                                            }
+                                                                                            <Dropdown.Item as={Link} href={route('delete_poll', { code: poll.poll_code.code })} >Delete Poll</Dropdown.Item>
+                                                                                        </Dropdown.Menu>
+                                                                                    </Dropdown>
+                                                                                )
+                                                                            }
                                                                         </div>
                                                                     </div>
                                                                 </div>

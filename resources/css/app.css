@@ -19,6 +19,33 @@
   min-height: 100vh !important;
 }
 
+.countdown {
+  display: flex;
+  align-items: center;
+}
+.countdown .colon {
+  margin-right: 5px;
+  font-size: 1.3rem;
+  font-weight: bolder;
+  color: #433BA9 !important;
+}
+.countdown .tick-wrapper {
+  display: flex;
+  background: #2B2A3A;
+  color: white;
+  align-items: center;
+  min-width: 50px;
+  height: 40px;
+  justify-content: center;
+  border-radius: 5px;
+}
+.countdown .tick {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
 .text-bigger {
   font-size: 4rem !important;
 }
@@ -46,7 +73,10 @@ section .bordered-bottom {
 }
 @media screen and (max-width: 768px) {
   .login-form {
-    padding-top: 60px !important;
+    padding-top: 70px !important;
+  }
+  .login-form .text-title {
+    font-size: 1rem !important;
   }
 }
 .login-form .col-bg {
@@ -67,7 +97,7 @@ section .bordered-bottom {
 }
 @media screen and (max-width: 768px) {
   .login-form .col-bg {
-    padding-top: 10px !important;
+    padding-top: 55px !important;
   }
   .login-form .col-bg .img-ext-wrapper {
     background-image: url("../images/dark-ext-sm.png");
@@ -253,11 +283,11 @@ section .content {
   gap: 3px;
 }
 .navbar-toggler .menu-icon div {
-  border-radius: 2%;
+  border-radius: 50%;
   transition: 400ms ease-in-out !important;
   width: 15px;
   height: 15px;
-  background: #433BA9;
+  background: #2B2A3A;
 }
 .navbar-toggler .menu-icon div:nth-child(2), .navbar-toggler .menu-icon div:nth-child(3) {
   background: transparent;
@@ -267,10 +297,10 @@ section .content {
   transform: rotate(180deg);
 }
 .navbar-toggler .menu-icon.expanded div {
-  background: #433BA9 !important;
+  background: #2B2A3A !important;
 }
 .navbar-toggler .menu-icon.expanded div:nth-child(2), .navbar-toggler .menu-icon.expanded div:nth-child(3) {
-  border: 1px solid #433BA9 !important;
+  border: 1px solid #2B2A3A !important;
 }
 
 .text-profile-pic {
@@ -492,8 +522,8 @@ a.dropdown-toggler {
   height: 50px !important;
 }
 .user-profile-photo.md {
-  width: 100px !important;
-  height: 100px !important;
+  width: 120px !important;
+  height: 120px !important;
 }
 .user-profile-photo.lg {
   width: 150px !important;

@@ -5,7 +5,7 @@ import InputLabel from '@/Components/InputLabel';
 import PrimaryButton from '@/Components/PrimaryButton';
 import TextInput from '@/Components/TextInput';
 import { Head, Link, useForm } from '@inertiajs/react';
-import { Button, Form, Image } from 'react-bootstrap';
+import { Button, Form, Image, Spinner } from 'react-bootstrap';
 import AppLayout from '@/Layouts/AppLayout';
 import AppBgOverlay from '@/Components/AppBgOverlay';
 import Footer from '@/Components/Footer';
@@ -36,7 +36,7 @@ export default function Register({ auth }) {
 
     return (
         <AppLayout auth={auth} noBg>
-            <Head title="Register"/>
+            <Head title="Register" />
             <section className='login p-0'>
                 <div className="row g-0 login-form min-vh-100">
                     <div className="col-md-5 col-left box-border bg-purple-gray d-grid align-items-center p-xl-4 p-3">
@@ -183,6 +183,14 @@ export default function Register({ auth }) {
                                         <div className="d-grid mb-3">
                                             <Button type='submit' variant='blue' size='lg' disabled={processing}>
                                                 Register
+                                                {processing && (
+                                                    <Spinner
+                                                        animation='border'
+                                                        size='sm'
+                                                        variant='light'
+                                                        className='ms-2'
+                                                    />
+                                                )}
                                             </Button>
                                         </div>
                                         <div className="text-center">

@@ -16,10 +16,12 @@ class VoteController extends Controller
         $option_ids = $request->option_ids;
         $poll_id = $request->poll_id;
 
+        $participant_id = Participants::select('id')->where('user_id',$user_id)->where('poll_id',$poll_id)->first()['id'];
+
         foreach ($option_ids as $key => $option_id) {
             Vote::create([
                 'poll_id' => $poll_id,
-                'user_id' => $user_id,
+                'participant_id' => $participant_id,
                 'option_id' => $option_id,
                 'is_submitted' => true
             ]);

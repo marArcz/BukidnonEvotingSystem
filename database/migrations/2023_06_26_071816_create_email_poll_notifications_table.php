@@ -11,12 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('votes', function (Blueprint $table) {
+        Schema::create('email_poll_notifications', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
-            $table->unsignedBigInteger('option_id');
-
-            $table->foreign('option_id')->references('id')->on('options')->cascadeOnDelete();
         });
     }
 
@@ -25,6 +22,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('votes');
+        Schema::dropIfExists('email_poll_notifications');
     }
 };

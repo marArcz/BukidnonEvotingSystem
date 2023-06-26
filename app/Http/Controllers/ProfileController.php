@@ -28,17 +28,19 @@ class ProfileController extends Controller
     /**
      * Update the user's profile information.
      */
-    public function update(ProfileUpdateRequest $request): RedirectResponse
+    public function update(Request $request)
     {
-        $request->user()->fill($request->validated());
+        $user = $request->user();
+        $user->firstname = $request->firstname;
+        $user->lastname = $request->lastname;
+        $user->username = $request->username;
+        $user->email = $request->email;
 
-        if ($request->user()->isDirty('email')) {
-            $request->user()->email_verified_at = null;
+        if($user->save()){
+            return redirect()->back()->with('success','Successfully saved!');
+        }else{
+            return redirect()->back()->with('error','Something went wrong please try again later!');
         }
-
-        $request->user()->save();
-
-        return Redirect::route('profile.edit');
     }
 
     /**
@@ -62,7 +64,8 @@ class ProfileController extends Controller
         return Redirect::to('/');
     }
 
-    public function changePhoto(Request $request){
+    public function changePhoto(Request $request)
+    {
         $user_id = $request->user_id;
         $user = User::find($user_id);
 
@@ -71,6 +74,6 @@ class ProfileController extends Controller
         $user->photo = $image;
         $user->save();
 
-        return response()->json(['success'=>true]);
+        return response()->json(['success' => true]);
     }
 }

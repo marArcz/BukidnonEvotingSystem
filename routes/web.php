@@ -38,7 +38,6 @@ Route::prefix('/')->group(function () {
 })->middleware(['auth','verified']);
 
 Route::middleware('auth')->prefix('/polls')->group(function () {
-    Route::get('/voter/{code}/', [PollController::class, 'voter'])->name('voter_poll');
     Route::get('/{code}/vote', [PollController::class, 'voting'])->name('voting');
     Route::get('/{code}/myvote', [PollController::class, 'myVote'])->name('myvote');
     Route::get('/{id}/manage', [PollController::class, 'manage'])->name('manage_poll');
@@ -51,10 +50,13 @@ Route::middleware('auth')->prefix('/polls')->group(function () {
     Route::get('/{code}/statistics', [PollController::class, 'statistics'])->name('statistics');
 });
 
-
+Route::get('/polls/voter/{code}/', [PollController::class, 'voter'])->name('voter_poll');
 Route::get('/polls/{code}/voters', [PollController::class, 'manageVoters'])->name('poll_voters')->middleware(['ensure_poll_host','auth']);
 
 
+Route::get('/auth-redirect', function(){
+    return redirect(route('login'))->with('error','You need to login first!');
+})->name('auth.redirect');
 Route::get('/dashboard', [HomeController::class, 'dashboard'])->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {

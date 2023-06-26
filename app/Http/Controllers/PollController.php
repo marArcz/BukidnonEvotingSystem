@@ -85,11 +85,11 @@ class PollController extends Controller
     public function manage(Request $request)
     {
         $poll_id = $request->id;
-        $data['poll'] = Poll::with(['poll_code', 'option_groups'])->where('id', $poll_id)->where('is_deleted',false)->first();
+        $data['poll'] = Poll::with(['poll_code', 'option_groups'])->where('id', $poll_id)->where('is_deleted', false)->first();
         if ($data['poll']) {
             return Inertia::render('Poll', $data);
         } else {
-            return redirect()->intended(route('error',['status'=>404]));
+            return redirect()->intended(route('error', ['status' => 404]));
         }
     }
     public function voter(Request $request)
@@ -101,17 +101,21 @@ class PollController extends Controller
             return redirect()->intended(route('poll-not-found'));
         }
         // find poll
-        $data['poll'] = Poll::with(['poll_code', 'option_groups'])->where('id', $poll_code->poll_id)->where('is_deleted',false)->first();
+        $data['poll'] = Poll::with(['poll_code', 'option_groups'])->where('id', $poll_code->poll_id)->where('is_deleted', false)->first();
 
         if ($request->user()) {
             $user = $request->user();
             // get if user already joined the poll
-            $data['participant'] = Participants::where('user_id', $user['id'])->where('poll_id', $data['poll']->id)->where('is_deleted',false)->first();
+            $data['participant'] = Participants::where('user_id', $user['id'])->where('poll_id', $data['poll']->id)->first();
         } else {
             $data['participant'] = null;
         }
 
         if ($data['poll']) {
+            $data['session'] = [
+                'success' => session('success'),
+                'error' => session('error')
+            ];
             return Inertia::render('Voters/Poll', $data);
         } else {
             return redirect()->intended(route('poll-not-found'));
@@ -151,16 +155,20 @@ class PollController extends Controller
         $user = $request->user();
         $code = $request->code;
 
-        $poll_code = PollCode::with(['poll'])->where('code', $code)->first();
+        $participant = Participants::where('user_id', $user->id)->whereIn('poll_id', PollCode::select('poll_id')->where('code', $code))->first();
 
-        if(!$poll_code){
-            return redirect()->intended(route('poll-not-found'));
+        if (!$participant) {
+            $poll_code = PollCode::with(['poll'])->where('code', $code)->first();
+
+            if (!$poll_code) {
+                return redirect()->intended(route('poll-not-found'));
+            }
+
+            $participant = Participants::create([
+                'user_id' => $user->id,
+                'poll_id' => $poll_code->poll->id
+            ]);
         }
-
-        $participant = Participants::create([
-            'user_id' => $user->id,
-            'poll_id' => $poll_code->poll->id
-        ]);
 
 
         return redirect()->intended(route('voter_poll', ['code' => $code]))->with('success', 'You can now participate in this poll.');
@@ -173,8 +181,8 @@ class PollController extends Controller
 
         $poll_code = PollCode::with(['poll'])->where('code', $code)->first();
 
-        if(!$poll_code){
-            return response()->json(['poll_code'=>$poll_code,'message'=>"You entered an invalid code"],404);
+        if (!$poll_code) {
+            return response()->json(['poll_code' => $poll_code, 'message' => "You entered an invalid code"], 404);
         }
 
         $participant = Participants::create([
@@ -183,7 +191,7 @@ class PollController extends Controller
         ]);
 
 
-        return response()->json(['success'=>true]);
+        return response()->json(['success' => true]);
     }
 
     public function statistics(Request $request)
@@ -218,7 +226,7 @@ class PollController extends Controller
         // find poll
         $data['poll'] = Poll::with(['poll_code', 'option_groups', 'participants'])->where('id', $poll_code->poll_id)->first();
         // get votes
-        $data['votes'] = Vote::with(['option'])->where('poll_id', $data['poll']->id)->where('user_id', $user->id)->get();
+        $data['votes'] = Vote::with(['option'])->where('poll_id', $data['poll']->id)->whereIn('participant_id', Participants::select('id')->where('user_id',$user->id))->get();
 
         if ($data['poll']) {
             return Inertia::render('MyVote', $data);
@@ -336,12 +344,13 @@ class PollController extends Controller
         }
     }
 
-    public function delete(Request $request){
+    public function delete(Request $request)
+    {
         $code = $request->code;
-        $poll = Poll::whereIn('id',PollCode::select('id')->where('code',$code))->first();
+        $poll = Poll::whereIn('id', PollCode::select('id')->where('code', $code))->first();
         $poll->is_deleted = true;
         $poll->save();
 
-        return redirect()->back()->with('success','Successfully deleted poll!');
+        return redirect()->back()->with('success', 'Successfully deleted poll!');
     }
 }

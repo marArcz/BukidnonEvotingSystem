@@ -1,5 +1,5 @@
 import AppLayout from '@/Layouts/AppLayout'
-import { Head } from '@inertiajs/react'
+import { Head, Link } from '@inertiajs/react'
 import React, { useState } from 'react'
 import PollIcon from '../../images/poll-icon-1.png';
 import { Button, Form, Image } from 'react-bootstrap';
@@ -28,9 +28,9 @@ const MyVote = ({ auth, poll, votes }) => {
                     </div>
                 </div>
                 <div className="container mt-3">
-                    <button type='button' onClick={() => history.back()} className='btn btn-light border shadow-sm mb-3'>
+                    <Link href={route('voter_poll',{code:poll.poll_code.code})} className='btn btn-light border shadow-sm mb-3'>
                         <i className='bx bx-arrow-back'></i>
-                    </button>
+                    </Link>
                     <div className="card shadow-sm border">
                         <div className="card-body p-xl-4 px-3">
                             <div className="row gy-4 align-items-center">

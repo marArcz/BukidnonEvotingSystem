@@ -131,7 +131,7 @@ const Statistics = ({ auth, poll, votes }) => {
                     <button type='button' onClick={() => history.back()} className='btn btn-light border shadow-sm mb-3'>
                         <i className='bx bx-arrow-back'></i>
                     </button>
-                    <div className="card">
+                    <div className="card shadow-sm">
                         <div className="card-body p-xl-4 px-3">
                             <div className="row gy-4 align-items-center">
                                 <div className="col-md">

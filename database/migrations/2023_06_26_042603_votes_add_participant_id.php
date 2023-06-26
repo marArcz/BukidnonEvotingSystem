@@ -11,12 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('votes', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
-            $table->unsignedBigInteger('option_id');
-
-            $table->foreign('option_id')->references('id')->on('options')->cascadeOnDelete();
+        Schema::table('votes', function (Blueprint $table) {
+            //
+            $table->unsignedBigInteger('participant_id');
+            $table->foreign('participant_id')->references('id')->on('participants')->cascadeOnDelete();
         });
     }
 
@@ -25,6 +23,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('votes');
+        Schema::table('votes', function (Blueprint $table) {
+            //
+        });
     }
 };

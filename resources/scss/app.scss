@@ -6,7 +6,7 @@
 
 $profile-photo-sizes: (
     'sm':50px,
-    'md':100px,
+    'md':120px,
     'lg':150px
 );
 
@@ -38,6 +38,34 @@ $profile-photo-sizes: (
 
     // }
 
+}
+
+.countdown{
+    display: flex;
+    align-items: center;
+    .colon{
+        margin-right: 5px;
+        font-size: 1.3rem;
+        font-weight: bolder;
+        color: $purple-secondary !important;
+    }
+    .tick-wrapper{
+        display: flex;
+        background: $dark-purple;
+        color: white;
+        align-items: center;
+        min-width: 50px;
+        height: 40px;
+        justify-content: center;
+        border-radius: 5px;
+
+    }
+    .tick{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+    }
 }
 
 .text-bigger {
@@ -74,10 +102,15 @@ section {
     box-sizing: border-box;
 
     @media screen and (max-width:768px) {
-        padding-top: 60px !important;
+        padding-top: 70px !important;
+        .text-title{
+            font-size: 1rem !important;
+        }
     }
 
-    .col-left {}
+    .col-left {
+
+    }
 
     .col-bg {
         // background: url('../images/login-col-bg.png');
@@ -103,7 +136,7 @@ section {
 
     @media screen and (max-width:768px) {
         .col-bg {
-            padding-top: 10px !important;
+            padding-top: 55px !important;
 
             .img-ext-wrapper {
                 background-image: url('../images/dark-ext-sm.png');
@@ -344,13 +377,13 @@ section {
         gap: 3px;
 
         div {
-            border-radius: 2%;
+            border-radius: 50%;
             // transition-delay: 500ms !important;
             transition: 400ms ease-in-out !important;
             $size: 15px;
             width: $size;
             height: $size;
-            background: $purple-secondary;
+            background: $dark-purple;
 
             &:nth-child(2),
             &:nth-child(3) {
@@ -363,11 +396,11 @@ section {
             transform: rotate(180deg);
 
             div {
-                background: $purple-secondary !important;
+                background: $dark-purple !important;
 
                 &:nth-child(2),
                 &:nth-child(3) {
-                    border: 1px solid $purple-secondary !important;
+                    border: 1px solid $dark-purple !important;
                 }
             }
         }

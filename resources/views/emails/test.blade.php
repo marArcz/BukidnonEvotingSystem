@@ -1,0 +1,1 @@
+<h1>Hello this is a test email for cron job.</h1>

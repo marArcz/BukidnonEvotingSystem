@@ -18,8 +18,8 @@ return new class extends Migration
             $table->unsignedBigInteger('poll_id');
             $table->integer('has_voted')->default(0);
 
-            $table->foreign('user_id')->references('id')->on('users');
-            $table->foreign('poll_id')->references('id')->on('polls');
+            $table->foreign('user_id')->references('id')->on('users')->cascadeOnDelete();
+            $table->foreign('poll_id')->references('id')->on('polls')->cascadeOnDelete();
         });
     }
 
