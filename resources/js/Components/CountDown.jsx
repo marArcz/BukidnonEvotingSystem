@@ -81,6 +81,11 @@ export const getTimeDifference = (from, to) => {
     let minutes = Math.floor(minutesDiff / msInMinute)
     let seconds = Math.floor(secondsDiff / msInSecond)
 
+    days = days < 0 ? 0 : days;
+    hours = hours < 0? 0:hours;
+    minutes = minutes < 0 ? 0 : minutes
+    seconds = seconds < 0 ? 0 : seconds
+
     return {
         days,
         hours,

@@ -27,7 +27,7 @@ const Home = ({ auth }) => {
                             </div>
                             <div>
                                 <p className=' fs-5 text-secondary'>Create an account to start using our app.</p>
-                                <Link className=' btn-lg btn btn-purple-secondary' href={route('register')}>Create Account</Link>
+                                <Link className=' btn-lg btn btn-dark-purple' href={route('register')}>Create Account</Link>
                             </div>
                         </div>
                         <div className="col-md">
@@ -60,7 +60,7 @@ const Home = ({ auth }) => {
                                     <Image src={ImageEasy} fluid />
                                 </div>
                                 <div>
-                                    <p className='my-1 fw-bold text-uppercase'>Ease to use</p>
+                                    <p className='my-1 fw-bold text-uppercase'>Easy to use</p>
                                     <p className=' text-secondary my-1'>Our app is built to be user friendly</p>
                                 </div>
                             </div>

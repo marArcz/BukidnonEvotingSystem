@@ -29,6 +29,8 @@ use Inertia\Inertia;
 // });
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::get('/about', [HomeController::class, 'about'])->name('about');
+Route::get('/contact', [HomeController::class, 'contact'])->name('contact');
 Route::get('/{status}/error', [HomeController::class, 'error'])->name('error');
 
 Route::prefix('/')->group(function () {
@@ -37,10 +39,10 @@ Route::prefix('/')->group(function () {
     Route::get('/profile/view', [HomeController::class, 'profile'])->name('profile');
 })->middleware(['auth','verified']);
 
-Route::middleware('auth')->prefix('/polls')->group(function () {
+Route::middleware(['auth','check.poll.deadline'])->prefix('/polls')->group(function () {
     Route::get('/{code}/vote', [PollController::class, 'voting'])->name('voting');
     Route::get('/{code}/myvote', [PollController::class, 'myVote'])->name('myvote');
-    Route::get('/{id}/manage', [PollController::class, 'manage'])->name('manage_poll');
+    Route::get('/{code}/manage', [PollController::class, 'manage'])->name('manage_poll');
     Route::get('/{id}/end', [PollController::class, 'endPoll'])->name('endPoll');
     Route::get('/{code}/edit', [PollController::class, 'edit'])->name('edit_poll');
     Route::get('/{code}/delete', [PollController::class, 'delete'])->name('delete_poll');

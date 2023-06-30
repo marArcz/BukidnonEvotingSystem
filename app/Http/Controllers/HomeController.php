@@ -62,10 +62,21 @@ class HomeController extends Controller
     }
 
     public function profile(Request $request){
+        $user = $request->user();
+        //
+        $polls_created = Poll::where('user_id',$user->id)->count();
+        $polls_joined = Participants::where('user_id',$user->id)->count();
+
+        $data['profile'] = [
+            'polls_created' => $polls_created,
+            'polls_joined' => $polls_joined,
+        ];
+
         $data['session'] = [
             'success'=>session('success'),
             'error'=>session('error'),
         ];
         return Inertia::render('Profile',$data);
     }
+
 }

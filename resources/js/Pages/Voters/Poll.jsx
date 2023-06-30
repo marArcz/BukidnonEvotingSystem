@@ -11,6 +11,7 @@ import defaultPhoto from '../../../images/default.jpg'
 import { useState } from 'react'
 import { useEffect } from 'react'
 import CountDown from '@/Components/CountDown'
+import ProfilePhoto from '@/Components/ProfilePhoto'
 
 const Poll = ({ auth, poll, participant, session }) => {
 
@@ -97,10 +98,12 @@ const Poll = ({ auth, poll, participant, session }) => {
                                             <div className="row align-items-center">
                                                 <div className="col-auto h-100">
                                                     {
-                                                        auth?.user ? (
-                                                            <TextProfilePic text={auth.user.firstname[0] + auth.user.lastname[0]} />
+                                                        auth.user.photo ?(
+                                                            <ProfilePhoto className="p-1 border border-2" image={auth.user.photo}/>
                                                         ) : (
-                                                            <Image fluid thumbnail src={defaultPhoto} />
+                                                            // <Image fluid thumbnail src={defaultPhoto} />
+                                                            <TextProfilePic text={auth.user.firstname[0] + auth.user.lastname[0]} />
+
                                                         )
                                                     }
                                                 </div>

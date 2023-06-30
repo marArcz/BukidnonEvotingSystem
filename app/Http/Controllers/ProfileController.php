@@ -8,6 +8,7 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -75,5 +76,24 @@ class ProfileController extends Controller
         $user->save();
 
         return response()->json(['success' => true]);
+    }
+    public function changePassword(Request $request)
+    {
+        $user_id = $request->user_id;
+        $user = User::find($user_id);
+        $new_password = $request->new_password;
+        $current_password = $request->current_password;
+
+        if(Hash::check($current_password,$user->password)){
+            $user->password = Hash::make($new_password);
+            $user->save();
+        }else{
+            return response()->json([
+                'success'=>false,
+                'message' => 'Your password is incorrect'
+            ]);
+        }
+
+        return response()->json(['success' => true,'user'=>$user]);
     }
 }

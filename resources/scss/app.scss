@@ -78,14 +78,14 @@ $profile-photo-sizes: (
 
 section {
     .section-header {
-        height: 160px !important;
+        height: 140px !important;
     }
 
     .overlay-top {
-        margin-top: -90px;
+        margin-top: -70px;
 
         .overlay-card {
-            border-top: 2px solid rgba(#2e2e2e, 1) !important;
+            border-top: 2px solid rgba($color: rgb(0,0,0,0), $alpha: 0.7) !important;
         }
     }
 
@@ -127,6 +127,7 @@ section {
             padding: 0 !important;
             background-image: url('../images/dark-ext.png');
             background-size: cover;
+            background-position: right;
             background-repeat: no-repeat !important;
             // img{
             //     height: 100%;
@@ -155,7 +156,7 @@ section {
 }
 
 section {
-    padding-top: 100px !important;
+    padding-top: 92px !important;
     padding-bottom: 30px !important;
     min-height: 100vh !important;
 
@@ -201,7 +202,7 @@ section {
 
 .navbar {
     .navbar-logo {
-        width: 200px;
+        width: 180px;
     }
 }
 
@@ -383,7 +384,7 @@ section {
             $size: 15px;
             width: $size;
             height: $size;
-            background: $dark-purple;
+            background: $light-purple;
 
             &:nth-child(2),
             &:nth-child(3) {
@@ -396,11 +397,11 @@ section {
             transform: rotate(180deg);
 
             div {
-                background: $dark-purple !important;
+                background: $light-purple !important;
 
                 &:nth-child(2),
                 &:nth-child(3) {
-                    border: 1px solid $dark-purple !important;
+                    border: 1px solid $light-purple !important;
                 }
             }
         }
@@ -680,6 +681,27 @@ a.dropdown-toggler {
     }
 }
 
+.profile-list{
+    .list-group-item{
+        cursor: pointer !important;
+        &:hover{
+            background: rgb(245,245,245) !important;
+        }
+    }
+}
+
+.btn-download-container{
+    position: fixed;
+    z-index: 999;
+    bottom: 10px;
+    right: 10px;
+    background: transparent;
+    button{
+        box-shadow: 1px 1px 5px rgb(0, 0, 0) !important;
+
+    }
+}
+
 
 @keyframes fade-in {
     from {
@@ -692,6 +714,11 @@ a.dropdown-toggler {
 }
 
 
+@media print{
+    .navbar{
+        display: none !important;
+    }
+}
 
 /* media queiries */
 @media screen and (max-width:768px) {

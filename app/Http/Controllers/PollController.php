@@ -2,14 +2,17 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\PollClosed;
 use App\Models\Option;
 use App\Models\OptionGroup;
 use App\Models\Participants;
 use App\Models\Poll;
 use App\Models\PollCode;
+use App\Models\User;
 use App\Models\Vote;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 use Inertia\Inertia;
 
@@ -37,8 +40,8 @@ class PollController extends Controller
                 'poll_id' => $newPoll->id,
                 'code' => $code
             ]);
-
-            return response()->json(['poll' => $newPoll]);
+            $poll = Poll::with(['poll_code'])->where('id',$newPoll->id)->first();
+            return response()->json(['poll' => $poll]);
         }
         return response()->json(status: 500);
     }
@@ -84,10 +87,11 @@ class PollController extends Controller
 
     public function manage(Request $request)
     {
-        $poll_id = $request->id;
-        $data['poll'] = Poll::with(['poll_code', 'option_groups'])->where('id', $poll_id)->where('is_deleted', false)->first();
-        if ($data['poll']) {
-            return Inertia::render('Poll', $data);
+        $code = $request->code;
+        $poll = Poll::with(['poll_code', 'option_groups'])->whereIn('id',PollCode::select('poll_id')->where('code',$code))->where('is_deleted', false)->first();
+        
+        if ($poll) {
+            return Inertia::render('Poll', ['poll'=>$poll]);
         } else {
             return redirect()->intended(route('error', ['status' => 404]));
         }
@@ -259,7 +263,7 @@ class PollController extends Controller
         $title = $request->title;
         $description = $request->description;
 
-        $poll = Poll::find($poll_id);
+        $poll = Poll::with(['poll_code','option_groups'])->where('id',$poll_id)->first();
         $poll->title = $title;
         $poll->description = $description;
         if ($poll->save()) {
@@ -316,10 +320,14 @@ class PollController extends Controller
 
     public function endPoll(Request $request)
     {
-        $poll = Poll::find($request->id);
+        $poll = Poll::where('id',$request->id)->with(['poll_code'])->firstOrFail();
         $poll->status = "Closed";
-
         $poll->save();
+
+        $users = User::whereIn('id',Participants::select('user_id')->where('poll_id',$poll->id))->get();
+        foreach ($users as $key => $user) {
+            Mail::to($user->email)->send(new PollClosed($user,$poll));
+        }
 
         return redirect()->back()->with('success', 'Successfully updated!');
     }
@@ -353,4 +361,20 @@ class PollController extends Controller
 
         return redirect()->back()->with('success', 'Successfully deleted poll!');
     }
+
+    public function resume_poll(Request $request){
+        $code = $request->code;
+        $poll = Poll::whereIn('id',PollCode::select('poll_id')->where('code',$code))->first();
+        if($poll){
+            if($request->has('deadline')){
+                $poll->deadline_date = $request->deadline;
+            }
+            $poll->status = 'Live';
+            $poll->save();
+        }else{
+            return response()->json(['success'=>false]);
+        }
+        return response()->json(['success'=>true]);
+    }
+
 }

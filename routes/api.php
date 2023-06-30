@@ -28,6 +28,7 @@ Route::prefix('/polls')->group(function(){
     Route::post('/options/add',[PollController::class,'addOptions'])->name('add-poll-options');
     Route::post('/options/edit',[PollController::class,'savePollOptions'])->name('add-poll-options');
     Route::post('/join', [PollController::class, 'apiJoinPoll'])->name('api.join.poll');
+    Route::post('/resume', [PollController::class, 'resume_poll'])->name('api.resume.poll');
 
 })->middleware(['auth']);
 
@@ -37,4 +38,5 @@ Route::prefix('/votes')->group(function(){
 
 Route::prefix('/profile')->group(function(){
     Route::post('/photo/change',[ProfileController::class,'changePhoto'])->name('profile.change.photo');
+    Route::post('/password/change',[ProfileController::class,'changePassword'])->name('profile.change.password');
 })->middleware(['auth']);

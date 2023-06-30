@@ -1,8 +1,8 @@
 import React from 'react'
 
-const TextProfilePic = ({ bg='purple-secondary',text = 'T',fluid=false,classname }) => {
+const TextProfilePic = ({ bg='purple-secondary',text = 'T',fluid=false,className }) => {
     return (
-        <div className={`text-profile-pic bg-${bg} text-light ${fluid?'fluid':''} ${classname}`}>{text}</div>
+        <div className={`text-profile-pic bg-${bg} text-light ${fluid?'fluid':''} ${className}`}>{text}</div>
     )
 }
 

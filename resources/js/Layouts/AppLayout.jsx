@@ -22,7 +22,6 @@ const AppLayout = ({ children, auth, noBg = false, noShadowHeader = false }) => 
         rtl={false}
         theme="dark"
       />
-      <ToastContainer />
       <AppHeader removeShadow={!noShadowHeader ? false : scrollPosition <= 10} auth={auth} />
       {children}
     </div>

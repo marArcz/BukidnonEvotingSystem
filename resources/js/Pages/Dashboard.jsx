@@ -57,7 +57,7 @@ export default function Dashboard({ auth, polls, session }) {
 
 
     return (
-        <AppLayout auth={auth} noBg>
+        <AppLayout auth={auth} >
             <Head title="Dashboard" />
             <ModalComponent backdrop={isProcessing ? 'static' : "backdrop"} show={showJoinModal} handleClose={() => setShowJoinModal(false)} title="Join Poll">
                 <form onSubmit={onJoinSubmit}>
@@ -78,7 +78,7 @@ export default function Dashboard({ auth, polls, session }) {
                 </form>
             </ModalComponent>
             <section className="dashboard">
-                <div className="bg-dark-purple section-header w-100 ">
+                <div className=" bg-purple-secondary section-header w-100 ">
                     <div className="container pt-4 pb-2 pb-25 d-flex justify-content-start align-items-center">
                         <h4 className='my-3 text-uppercase text-light fw-bolder text-center me-2'>
                             <i className=' bx bxs-dashboard'></i> Dashboard
@@ -163,12 +163,12 @@ export default function Dashboard({ auth, polls, session }) {
                                                                     <p className='my-1 text-light'>
                                                                         {
                                                                             poll.user_id == auth.user.id ? (
-                                                                                <Link href={route('manage_poll', { id: poll.id })} className='link-light fw-bold text-decoration-none'>
+                                                                                <Link href={route('manage_poll', { code: poll.poll_code.code })} className='link-light fw-bold text-decoration-none'>
                                                                                     {poll.title}
                                                                                     <Badge bg='danger' className='ms-2'>Hosted</Badge>
                                                                                 </Link>
                                                                             ) : (
-                                                                                <Link href={route('voter_poll', { code: poll.poll_code.code })} className='link-light'>
+                                                                                <Link href={route('voter_poll', { code: poll.poll_code.code })} className='link-light fw-bold text-decoration-none'>
                                                                                     {poll.title}
                                                                                 </Link>
                                                                             )

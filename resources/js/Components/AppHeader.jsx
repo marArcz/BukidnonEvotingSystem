@@ -11,7 +11,7 @@ const AppHeader = ({ auth, removeShadow = false }) => {
     return (
         <Navbar onToggle={(expanded) => setExpanded(expanded)} bg='white' expand='lg' fixed='top' className={`${removeShadow ? '' : 'shadow'} py-3 `}>
             <Container className=' align-middle align-items-center '>
-                <Navbar.Brand href="#home">
+                <Navbar.Brand href={route('home')}>
                     <Image fluid src={AppLogo} className='navbar-logo' />
                 </Navbar.Brand>
                 <Navbar.Toggle aria-controls="basic-navbar-nav">
@@ -27,13 +27,13 @@ const AppHeader = ({ auth, removeShadow = false }) => {
                     <Nav className="ms-auto">
                         {
                             auth?.user ? (
-                                <Nav.Link className='text-uppercase mx-lg-3 fs-6 link-dark' as={Link} href={route('dashboard')}>Home</Nav.Link>
+                                <Nav.Link className='text-uppercase mx-lg-3 fs-6 link-dark' as={Link} href={route('dashboard')}>Dashboard</Nav.Link>
                             ) : (
                                 <Nav.Link className='text-uppercase mx-lg-3 fs-6 link-dark' as={Link} href="/">Home</Nav.Link>
                             )
                         }
-                        <Nav.Link className='text-uppercase mx-lg-3 fs-6 link-dark' as={Link} href="#link">About</Nav.Link>
-                        <Nav.Link className='text-uppercase mx-lg-3 fs-6 link-dark' as={Link} href="#link">Contact</Nav.Link>
+                        <Nav.Link className='text-uppercase mx-lg-3 fs-6 link-dark' as={Link} href={route('about')}>About</Nav.Link>
+                        <Nav.Link className='text-uppercase mx-lg-3 fs-6 link-dark' as={Link} href={route('contact')}>Contact</Nav.Link>
 
                         {
                             auth?.user ? (

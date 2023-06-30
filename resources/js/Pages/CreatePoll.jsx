@@ -22,7 +22,7 @@ const CreatePoll = ({ auth }) => {
     const [showCalendar, setShowCalendar] = useState(false)
     const [deadline, setDeadline] = useState(null)
 
-    const months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+    const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 
     // initial empty option group
     let newOptionGroup = {
@@ -115,8 +115,10 @@ const CreatePoll = ({ auth }) => {
         formData.append('user_id', auth.user.id)
         formData.append('title', title)
         formData.append('description', description)
-        let ddline = `${Number(deadline.getMonth()) + Number(1) < 10 ? '0' : ''}${deadline.getFullYear()}-${Number(deadline.getMonth()) + Number(1) < 10 ? Number(deadline.getMonth()) + Number(1) : Number(deadline.getMonth()) + Number(1)}-${Number(deadline.getDate()) < 10 ? '0' : ''}${deadline.getDate()}`
-        formData.append('deadline', ddline)
+        if (deadline) {
+            let ddline = `${Number(deadline.getMonth()) + Number(1) < 10 ? '0' : ''}${deadline.getFullYear()}-${Number(deadline.getMonth()) + Number(1) < 10 ? Number(deadline.getMonth()) + Number(1) : Number(deadline.getMonth()) + Number(1)}-${Number(deadline.getDate()) < 10 ? '0' : ''}${deadline.getDate()}`
+            formData.append('deadline', ddline)
+        }
 
         axios.post('/polls/add', formData,)
             .then((res) => {
@@ -153,7 +155,7 @@ const CreatePoll = ({ auth }) => {
         }
 
         setProcessing(false);
-        window.location = route('dashboard')
+        window.location = route('manage_poll', { code: poll.poll_code.code })
 
     }
 
@@ -238,8 +240,8 @@ const CreatePoll = ({ auth }) => {
                                                     id="deadline"
                                                     onClick={() => setShowCalendar(true)}
                                                     name="deadline"
-                                                    value={deadline?`${months[deadline.getMonth()]} ${deadline.getDate()<10?`0${deadline.getDate()}`:deadline.getDate()}, ${deadline.getFullYear()}`:'No Deadline'}
-                                                    className={`border-secondary ${deadline?'text-dark':'text-secondary'}`}
+                                                    value={deadline ? `${months[deadline.getMonth()]} ${deadline.getDate() < 10 ? `0${deadline.getDate()}` : deadline.getDate()}, ${deadline.getFullYear()}` : 'No Deadline'}
+                                                    className={`border-secondary ${deadline ? 'text-dark' : 'text-secondary'}`}
                                                     placeholder='Set the deadline for this poll'
                                                 />
                                                 <div>
@@ -304,7 +306,7 @@ const CreatePoll = ({ auth }) => {
                                                                         <div className="col-md-12">
                                                                             <div className="option-item with-image mb-3" key={optionIndex}>
                                                                                 <div className="row gx-2 gy-2">
-                                                                                    <div className="col-md-3 text-center">
+                                                                                    <div className="col-auto text-center">
                                                                                         {
                                                                                             option.image && option.image !== '' ? (
                                                                                                 <Image thumbnail fluid src={option.image} />

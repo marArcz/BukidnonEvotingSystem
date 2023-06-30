@@ -1,12 +1,17 @@
+import { useEffect } from 'react';
+import Checkbox from '@/Components/Checkbox';
 import GuestLayout from '@/Layouts/GuestLayout';
 import InputError from '@/Components/InputError';
+import InputLabel from '@/Components/InputLabel';
 import PrimaryButton from '@/Components/PrimaryButton';
 import TextInput from '@/Components/TextInput';
-import { Head, useForm } from '@inertiajs/react';
+import { Head, Link, useForm } from '@inertiajs/react';
 import AppLayout from '@/Layouts/AppLayout';
-import { Button, Form, Image } from 'react-bootstrap';
-import ForgotPasswordImage from '../../../images/forgot-password.jpg';
+import { Alert, Button, Form, Image } from 'react-bootstrap';
+import VotingImage from '../../../images/voting (2).png';
 import AppBgOverlay from '@/Components/AppBgOverlay';
+import ImageExt from '../../../images/dark-ext.png'
+
 export default function ForgotPassword({ status }) {
     const { data, setData, post, processing, errors } = useForm({
         email: '',
@@ -19,57 +24,63 @@ export default function ForgotPassword({ status }) {
     };
 
     return (
-        <AppLayout>
-            <AppBgOverlay />
-            <section className="forgot-password">
-                <div className="mt-4 mb-3">
-                    <div className="container">
-                        <h1 className='mt-3 mb-4 text-center fw-bolder page-title'>Reset Password</h1>
-                        <div className="row justify-content-center">
-                            <div className="col-md-10">
-                                <div className="card bg-dark-purple text-light p-lg-4 p-3">
-                                    <div className="card-body text-center">
-                                        <Head title="Forgot Password" />
-                                        <div className="mb-4 text-sm ">
-                                            <p className='mb-2'>Forgot your password?</p>
-                                            <p>No problem. Just let us know your email address and we will email you a password
-                                                reset link that will allow you to choose a new one.</p>
-                                        </div>
-
-                                        {status && <div className="mb-4 font-medium text-sm text-light-purple">{status}</div>}
-
-                                        <form onSubmit={submit}>
-                                            <div className='mb-3'>
-                                                <div className="row justify-content-center">
-                                                    <div className="col-lg-5">
-                                                        {/* <Form.Label htmlFor="email"></Form.Label> */}
-                                                        <Form.Control
-                                                            id="email"
-                                                            name="email"
-                                                            value={data.email}
-                                                            className="mt-1 custom text-center"
-                                                            placeholder='Enter your email address'
-                                                            autoComplete="email"
-                                                            onChange={(e) => setData('email', e.target.value)}
-                                                            required
-                                                        />
-                                                        <InputError message={errors.email} className="mt-2" />
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <InputError message={errors.email} className="mt-2" />
-
-                                            <div className="flex items-center justify-end mt-4">
-                                                <Button type='submit' variant='purple' disabled={processing}>
-                                                    Email Password Reset Link
-                                                </Button>
-                                            </div>
-
-
-                                        </form>
-                                    </div>
+        <AppLayout noBg>
+            <section className="login p-0">
+                <div className="row g-0 login-form min-vh-100">
+                    <div className="col-md-5 col-left box-border bg-purple-gray d-grid align-items-center p-xl-4 p-3">
+                        <div className="text-center text-light">
+                            <div className="row justify-content-center ">
+                                <div className="col-xl-8 col-lg-8 col-md-7 col-5">
+                                    <Image src={VotingImage} fluid />
                                 </div>
+                            </div>
+                            <p className=' mt-3 text-shadow fs-4 col-xl-7 col-12 justify-content-center mx-auto text-uppercase text-title fw-medium'>
+                                Bukidnon classic custom voting system
+                            </p>
+                        </div>
+                    </div>
+                    <div className="col-md box-border d-grid align-items- position-relative col-bg p-lg-4 p-3">
+                        <div className="img-ext-wrapper ">
+                            {/* <img src={ImageExt} alt="" className='img-fluid' /> */}
+                            <div className="img-ext"></div>
+                        </div>
+                        <div className="row justify-content-center mt-xl-4">
+                            <div className="col-md-10 text-start">
+                                <Head title="Forgot Password" />
+                                <h1 className=' text-dark text-uppercase mb-4 fw-bolder text-start'>Forgot Password</h1>
+
+                                <div className="mb-5 text-sm ">
+                                    <p className='mb-2'>Forgot your password?</p>
+                                    <p>No problem. Just let us know your email address and we will email you a password
+                                        reset link that will allow you to choose a new one.</p>
+                                </div>
+
+                                {status && <div className="mb-4 font-medium text-sm text-light-purple">{status}</div>}
+
+                                <form onSubmit={submit}>
+                                    <div className='mb-3'>
+                                        <Form.Control
+                                            id="email"
+                                            name="email"
+                                            value={data.email}
+                                            className="mt-1 custom text-center"
+                                            placeholder='Enter your email address'
+                                            autoComplete="email"
+                                            onChange={(e) => setData('email', e.target.value)}
+                                            required
+                                            size='lg'
+                                        />
+                                        <InputError message={errors.email} className="mt-2" />
+                                    </div>
+
+                                    <InputError message={errors.email} className="mt-2" />
+
+                                    <div className="d-grid">
+                                        <Button type='submit' variant='primary'n disabled={processing}>
+                                            Email Password Reset Link
+                                        </Button>
+                                    </div>
+                                </form>
                             </div>
                         </div>
                     </div>

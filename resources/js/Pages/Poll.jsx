@@ -10,10 +10,111 @@ import AppBgOverlay from '@/Components/AppBgOverlay';
 import { useState } from 'react';
 import { useEffect } from 'react';
 import CountDown from '@/Components/CountDown';
+import Swal from 'sweetalert2';
+import ImagePower from '../../images/power-button.png';
+import ImageRestart from '../../images/restart.png'
+import ModalComponent from '@/Components/ModalComponent';
+import Calendar from 'react-calendar';
+import axios from 'axios';
+import { MultipartHeader } from '@/Helpers';
+import LoadingButton from '@/Components/LoadingButton';
+
 const Poll = ({ auth, poll }) => {
+    const [showResumeModal, setShowResumeModal] = useState(false)
+    const [newDeadline, setNewDeadline] = useState(null)
+    const [addDeadline, setAddDeadline] = useState(false)
+    const [minDate, setMinDate] = useState(null)
+    const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+    const [processing, setProcessing] = useState(false)
+    useEffect(() => {
+        let today = new Date();
+        today.setDate(new Date().getDate() + 1)
+        setMinDate(today)
+    }, [])
+
+
+    const onEndPoll = (e) => {
+        e.preventDefault();
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, end poll!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location = e.target.href;
+            }
+        })
+    }
+
+    const dateToString = (d) => {
+        let date = new Date(d)
+        let month = date.getMonth();
+        let day = date.getDate();
+        let year = date.getFullYear();
+
+        day = day < 10 ? `0${day}` : day
+
+        return `${months[month]} ${day}, ${year}`
+    }
+
+    const switchDeadline = () => {
+        if (addDeadline) {
+            setAddDeadline(false)
+            setNewDeadline(null)
+        } else {
+            setAddDeadline(true)
+        }
+
+    }
+
+    const onResumePoll = (e) => {
+        e.preventDefault();
+        var formData = new FormData();
+        formData.append('code', poll.poll_code.code);
+        if (newDeadline) {
+            let ddline = `${Number(newDeadline.getMonth()) + Number(1) < 10 ? '0' : ''}${newDeadline.getFullYear()}-${Number(newDeadline.getMonth()) + Number(1) < 10 ? Number(newDeadline.getMonth()) + Number(1) : Number(newDeadline.getMonth()) + Number(1)}-${Number(newDeadline.getDate()) < 10 ? '0' : ''}${newDeadline.getDate()}`
+            formData.append('deadline', ddline);
+        }
+
+        axios.post('/polls/resume', formData, MultipartHeader)
+            .then((res) => {
+                console.log(res)
+                window.location.reload()
+            })
+    }
 
     return (
         <AppLayout auth={auth} noBg>
+            <ModalComponent backdrop={processing ? 'static' : ''} title="Resume Poll" show={showResumeModal} handleClose={() => setShowResumeModal(false)}>
+                <form onSubmit={onResumePoll}>
+                    <div className="mb-3">
+                        <Form.Check // prettier-ignore
+                            type="switch"
+                            id="custom-switch"
+                            label="Add deadline"
+                            checked={addDeadline}
+                            onClick={switchDeadline}
+                            className='mb-3'
+                        />
+                        <Form.Control
+                            type='text'
+                            readOnly
+                            value={newDeadline ? dateToString(newDeadline) : 'No Deadline'}
+                            className='mb-3'
+                        />
+
+                        <Calendar value={newDeadline} minDate={minDate} onChange={d => setNewDeadline(d)} className="w-100" tileDisabled={() => !addDeadline} />
+                    </div>
+                    <div className="text-end">
+                        {/* <Button variant='purple-secondary' type='submit'>Submit</Button> */}
+                        <LoadingButton variant='purple-secondary' loading={processing} type='submit'>Submit</LoadingButton>
+                    </div>
+                </form>
+            </ModalComponent>
             <Head title={poll.title} />
             <section className="poll">
                 <div className=" bg-dark-purple w-100 py-4">
@@ -45,14 +146,14 @@ const Poll = ({ auth, poll }) => {
                             {
                                 poll.status == 'Live' && (
                                     <>
-                                        <p className='mb-2 text-dark-purple'>This poll will automatically close on:</p>
-
                                         {
                                             poll.deadline_date ? (
-                                                <CountDown endDate={new Date(poll.deadline_date)} />
-                                            ) : (
-                                                <p>No deadline</p>
-                                            )
+                                                <>
+                                                    <p className='mb-2 text-dark-purple'>This poll will automatically close on:</p>
+
+                                                    <CountDown endDate={new Date(poll.deadline_date)} />
+                                                </>
+                                        ) : null
                                         }
                                     </>
                                 )
@@ -100,12 +201,27 @@ const Poll = ({ auth, poll }) => {
                                         </div>
                                         <div className="col-md-3 col-6">
                                             <div className="text-center poll-action">
-                                                <Image className='mb-2' fluid src={EndImage} />
-                                                <div className="d-grid">
-                                                    <Link href={route('endPoll', { id: poll.id })} className={`${poll.status == 'Closed' ? 'disabled btn-dark-purple' : 'btn-purple-secondary'} btn rounded-0  text-light`}>
-                                                        {poll.status == "Live" ? "End" : "Already ended"}
-                                                    </Link>
-                                                </div>
+                                                {
+                                                    poll.status == 'Live' ? (
+                                                        <>
+                                                            <Image className='mb-2' fluid src={EndImage} />
+                                                            <div className="d-grid">
+                                                                <Link onClick={onEndPoll} href={route('endPoll', { id: poll.id })} className={`${poll.status == 'Closed' ? 'disabled btn-dark-purple' : 'btn-purple-secondary'} btn rounded-0  text-light`}>
+                                                                    {poll.status == "Live" ? "End" : "Already ended"}
+                                                                </Link>
+                                                            </div>
+                                                        </>
+                                                    ) : (
+                                                        <>
+                                                            <Image className='mb-2' fluid src={ImageRestart} style={{ width: '10px !important', height: '10px !important' }} />
+                                                            <div className="d-grid">
+                                                                <button type='button' onClick={() => setShowResumeModal(true)} className={`btn-purple-secondary btn rounded-0  text-light`}>
+                                                                    Resume poll
+                                                                </button>
+                                                            </div>
+                                                        </>
+                                                    )
+                                                }
                                             </div>
                                         </div>
                                     </div>

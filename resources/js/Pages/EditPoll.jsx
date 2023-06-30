@@ -11,6 +11,7 @@ import ImageUploader from '@/Components/ImageUploader'
 import { ShowPageLoader } from '@/Components/PageLoader'
 import axios from 'axios'
 import PencilIcon from '../../images/pencil icon.png';
+import CalendarModal from '@/Components/CalendarModal'
 const EditPoll = ({ auth, poll }) => {
     const [showImageUploaderModal, setShowImageUploaderModal] = useState(false)
     const [uploaderOptionGroupIndex, setUploaderOptionGroupIndex] = useState(null)
@@ -21,7 +22,9 @@ const EditPoll = ({ auth, poll }) => {
     const ImageUploaderRef = useRef();
     const [optionGroups, setOptionGroups] = useState([])
     const [removedOptionGroups, setRemovedOptionGroups] = useState([])
-
+    const [deadline, setDeadline] = useState(new Date(poll.deadline_date))
+    const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+    const [showCalendar, setShowCalendar] = useState(false)
     // initial empty option group
     let newOptionGroup = {
         new: true,
@@ -85,7 +88,7 @@ const EditPoll = ({ auth, poll }) => {
     }
 
     const removeOption = (optionGroupIndex, optionIndex) => {
-      
+
 
         let optionGroup = { ...optionGroups[optionGroupIndex] };
         let options = optionGroup.options.filter((value, i) => i !== optionIndex);
@@ -136,7 +139,10 @@ const EditPoll = ({ auth, poll }) => {
         formData.append('user_id', auth.user.id)
         formData.append('title', title)
         formData.append('description', description)
-
+        if(deadline){
+            let ddline = `${Number(deadline.getMonth()) + Number(1) < 10 ? '0' : ''}${deadline.getFullYear()}-${Number(deadline.getMonth()) + Number(1) < 10 ? Number(deadline.getMonth()) + Number(1) : Number(deadline.getMonth()) + Number(1)}-${Number(deadline.getDate()) < 10 ? '0' : ''}${deadline.getDate()}`
+            formData.append('deadline',ddline)
+        }
         axios.post('/polls/edit', formData,)
             .then((res) => {
                 console.log('res: ', res)
@@ -187,8 +193,8 @@ const EditPoll = ({ auth, poll }) => {
                     formData.append('option_images[]', option.image);
                     formData.append('option_descriptions[]', option.description);
                 }
-                for(let removedGroup of removedOptionGroups){
-                    formData.append('removed_groups[]',removedGroup.id);
+                for (let removedGroup of removedOptionGroups) {
+                    formData.append('removed_groups[]', removedGroup.id);
                 }
                 let res = await axios.post('/polls/options/edit', formData,
                     {
@@ -200,17 +206,37 @@ const EditPoll = ({ auth, poll }) => {
             }
         }
         var formData = new FormData();
-    
-        
 
         setProcessing(false);
-        window.location = route('dashboard')
+        window.location = route('manage_poll', { code: poll.poll_code.code })
+    }
+
+    const dateToString = (d) => {
+        let date = new Date(d)
+        let month = date.getMonth();
+        let day = date.getDate();
+        let year = date.getFullYear();
+
+        day = day < 10 ? `0${day}` : day
+
+        return `${months[month]} ${day}, ${year}`
+    }
+
+    const onSelectDeadline = (date, e) => {
+        setShowCalendar(false)
+        setDeadline(date)
+    }
+
+    const clearDeadline = () => {
+        setDeadline(null)
+        setShowCalendar(false)
     }
 
     return (
         <>
             <ImageUploader show={showImageUploaderModal} optionGroupIndex={uploaderOptionGroupIndex} optionIndex={uploaderOptionIndex} handleClose={() => setShowImageUploaderModal(false)} onCompleted={onImageUploaded} />
             <AppLayout auth={auth} noBg>
+                <CalendarModal handleClear={clearDeadline} show={showCalendar} handleClose={() => setShowCalendar(false)} handleSelect={onSelectDeadline} />
                 <Head title='Edit Poll' />
                 <section className="poll">
                     <div className="bg-purple-secondary w-100 ">
@@ -261,6 +287,20 @@ const EditPoll = ({ auth, poll }) => {
                                                     className="mt-1 custom light"
                                                     placeholder='Add some information about the election'
                                                     onChange={(e) => setDescription(e.target.value)}
+                                                />
+                                            </div>
+                                            <div className='mb-4'>
+                                                <Form.Label className='text-dark' htmlFor="description">Deadline (Optional):</Form.Label>
+                                                <Form.Control
+                                                    type='text'
+                                                    size='lg'
+                                                    id="description"
+                                                    name="description"
+                                                    readOnly
+                                                    value={deadline ? dateToString(deadline) : ''}
+                                                    className="mt-1 custom light"
+                                                    placeholder='No deadline'
+                                                    onClick={() => setShowCalendar(true)}
                                                 />
                                             </div>
                                             {
@@ -406,7 +446,7 @@ const EditPoll = ({ auth, poll }) => {
                                                     </button>
                                                 </div>
                                                 <div className="col-md">
-                                                    <button type='button' onClick={()=> history.back()} className="btn btn-secondary bg-opacity-5 btn-lg col-12">Discard</button>
+                                                    <button type='button' onClick={() => history.back()} className="btn btn-secondary bg-opacity-5 btn-lg col-12">Discard</button>
                                                 </div>
                                             </div>
                                         </div>
