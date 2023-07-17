@@ -89,7 +89,7 @@ const Poll = ({ auth, poll }) => {
 
     return (
         <AppLayout auth={auth} noBg>
-            <ModalComponent backdrop={processing ? 'static' : ''} title="Resume Poll" show={showResumeModal} handleClose={() => setShowResumeModal(false)}>
+            <ModalComponent backdrop={processing ? 'static' : 'backdrop'} title="Resume Poll" show={showResumeModal} handleClose={() => setShowResumeModal(false)}>
                 <form onSubmit={onResumePoll}>
                     <div className="mb-3">
                         <Form.Check // prettier-ignore
@@ -167,7 +167,7 @@ const Poll = ({ auth, poll }) => {
                                                 <div className="d-grid">
                                                     {
                                                         poll.status == 'Live' ? (
-                                                            <Link href={route('edit_poll', { code: poll.poll_code.code })} className="btn rounded-0 btn-purple-secondary text-light">Edit Poll</Link>
+                                                            <Link href={route('edit_poll', { code: poll.poll_code.code })} className="btn rounded-0 btn-dark text-light">Edit Poll</Link>
                                                         ) : (
                                                             <Button variant='dark' className='rounded-0 disabled' type='button' disabled>Edit Poll</Button>
                                                         )
@@ -179,7 +179,7 @@ const Poll = ({ auth, poll }) => {
                                             <div className="text-center poll-action">
                                                 <Image className='mb-2' fluid src={VoterListImage} />
                                                 <div className="d-grid">
-                                                    <Link href={route('poll_voters', { code: poll.poll_code.code })} className="btn rounded-0 btn-purple-secondary text-light">Voters</Link>
+                                                    <Link href={route('poll_voters', { code: poll.poll_code.code })} className="btn rounded-0 btn-dark text-light">Voters</Link>
                                                 </div>
                                             </div>
                                         </div>
@@ -189,11 +189,11 @@ const Poll = ({ auth, poll }) => {
                                                 {
                                                     poll.status == 'Live' ? (
                                                         <div className="d-grid">
-                                                            <Link href={route('statistics', { code: poll.poll_code.code })} className="btn rounded-0 btn-purple-secondary text-light">Live Poll</Link>
+                                                            <Link href={route('statistics', { code: poll.poll_code.code })} className="btn rounded-0 btn-dark text-light">Live Poll</Link>
                                                         </div>
                                                     ) : (
                                                         <div className="d-grid">
-                                                            <Link href={route('result', { code: poll.poll_code.code })} className="btn rounded-0 btn-purple-secondary text-light">See result</Link>
+                                                            <Link href={route('result', { code: poll.poll_code.code })} className="btn rounded-0 btn-dark text-light">See result</Link>
                                                         </div>
                                                     )
                                                 }
@@ -206,7 +206,7 @@ const Poll = ({ auth, poll }) => {
                                                         <>
                                                             <Image className='mb-2' fluid src={EndImage} />
                                                             <div className="d-grid">
-                                                                <Link onClick={onEndPoll} href={route('endPoll', { id: poll.id })} className={`${poll.status == 'Closed' ? 'disabled btn-dark-purple' : 'btn-purple-secondary'} btn rounded-0  text-light`}>
+                                                                <Link onClick={onEndPoll} href={route('endPoll', { id: poll.id })} className={`${poll.status == 'Closed' ? 'disabled btn-secondary' : 'btn-dark'} btn rounded-0  text-light`}>
                                                                     {poll.status == "Live" ? "End" : "Already ended"}
                                                                 </Link>
                                                             </div>
@@ -215,7 +215,7 @@ const Poll = ({ auth, poll }) => {
                                                         <>
                                                             <Image className='mb-2' fluid src={ImageRestart} style={{ width: '10px !important', height: '10px !important' }} />
                                                             <div className="d-grid">
-                                                                <button type='button' onClick={() => setShowResumeModal(true)} className={`btn-purple-secondary btn rounded-0  text-light`}>
+                                                                <button type='button' onClick={() => setShowResumeModal(true)} className={`btn-dark btn rounded-0  text-light`}>
                                                                     Resume poll
                                                                 </button>
                                                             </div>

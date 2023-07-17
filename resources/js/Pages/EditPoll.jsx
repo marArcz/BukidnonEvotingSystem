@@ -239,7 +239,7 @@ const EditPoll = ({ auth, poll }) => {
                 <CalendarModal handleClear={clearDeadline} show={showCalendar} handleClose={() => setShowCalendar(false)} handleSelect={onSelectDeadline} />
                 <Head title='Edit Poll' />
                 <section className="poll">
-                    <div className="bg-purple-secondary w-100 ">
+                    <div className="bg-dark w-100 ">
                         <div className="container py-2 d-flex justify-content-center align-items-center">
                             <h3 className='my-0 text-light fw-bolder text-center me-2'>
                                 EDIT POLL
@@ -424,7 +424,7 @@ const EditPoll = ({ auth, poll }) => {
                                         <div className="card-footer bg-white p-xl-4 p-3">
                                             <div className="row gy-2">
                                                 <div className="col-md">
-                                                    <button disabled={processing} className="btn btn-purple-secondary btn-lg col-12" type='submit'>
+                                                    <button disabled={processing} className="btn btn-dark btn-lg col-12" type='submit'>
                                                         {
                                                             !processing ? (
                                                                 <span>Save Changes</span>

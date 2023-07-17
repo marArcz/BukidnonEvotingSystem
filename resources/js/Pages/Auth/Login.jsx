@@ -8,7 +8,7 @@ import TextInput from '@/Components/TextInput';
 import { Head, Link, useForm } from '@inertiajs/react';
 import AppLayout from '@/Layouts/AppLayout';
 import { Alert, Button, Form, Image } from 'react-bootstrap';
-import VotingImage from '../../../images/voting (2).png';
+import VotingImage from '../../../images/voting-dark.png';
 import AppBgOverlay from '@/Components/AppBgOverlay';
 import ImageExt from '../../../images/dark-ext.png'
 export default function Login({ auth, status, canResetPassword, session }) {
@@ -122,7 +122,7 @@ export default function Login({ auth, status, canResetPassword, session }) {
                                                 </Link>
                                             )}
                                         </div>
-                                        <Button type='submit' variant='blue' size='lg' className=' text-uppercase rounded-3 col-12 my-3' disabled={processing}>
+                                        <Button type='submit' variant='dark' size='lg' className=' text-uppercase rounded-3 col-12 my-3' disabled={processing}>
                                             Log in
                                         </Button>
 

@@ -15,6 +15,9 @@ import jsPDF from 'jspdf';
 import * as htmlToImage from 'html-to-image';
 import { toPng, toJpeg, toBlob, toPixelData, toSvg } from 'html-to-image';
 import ModalComponent from '@/Components/ModalComponent';
+import PollResult from '@/Components/PollResult';
+import fileDownload from 'js-file-download';
+import axios, { Axios } from 'axios';
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -165,20 +168,25 @@ const Result = ({ auth, poll, votes }) => {
         )
     }
 
-    const downloadResult = (e) => {
+    const downloadResult = () => {
         var element = document.getElementById('poll-result')
         // html2pdf().from(element).set(opt).save()
         // .then()
         setGeneratingPdf(true);
         htmlToImage.toPng(element)
             .then(function (dataUrl) {
-                // var img = new Image();
-                // img.src = dataUrl;
-                // document.body.appendChild(img);
                 console.log(dataUrl)
-                setGeneratingPdf(false);
                 setImageResultUri(dataUrl);
-                setShowModal(true)
+                // fileDownload(dataUrl, )
+                let filename = poll.title + ' - Result.png'
+                axios.get(dataUrl, {
+                    baseURL:'',
+                    responseType: 'blob',
+                }).then(res => {
+                    console.log('res: ', res)
+                    setGeneratingPdf(false);
+                    fileDownload(res.data, filename);
+                });
             })
             .catch(function (error) {
                 console.error('oops, something went wrong!', error);
@@ -186,29 +194,184 @@ const Result = ({ auth, poll, votes }) => {
 
     }
 
+    const getMostVotedIndex = (pollGroup) => {
+        var index = 0;
+        let highestVote = getVoteCount(pollGroup.options[0]);
+        for (let x = 0; x < pollGroup.options.length; x++) {
+            if (getVoteCount(pollGroup.options[x]) > highestVote) {
+                index = x;
+            }
+        }
+
+        return index;
+    }
+
     return (
         <AppLayout noBg auth={auth}>
             <Head title={poll.title} />
             <div className="btn-download-container">
-                <LoadingButton loading={generatingPdf} onClick={downloadResult} variant="purple-secondary" spinnerVariant="light" type='button'>
-                    Save Result
-                    <i className=' bx bx-download ms-2'></i>
+                <LoadingButton onClick={() => setShowModal(true)} variant="purple-secondary" spinnerVariant="light" type='button'>
+                    Generate Result
+                    <i className=' bx bx-refresh ms-2'></i>
                 </LoadingButton>
             </div>
             <ModalComponent size="lg" title="Poll Result" show={showModal} handleClose={() => setShowModal(false)}>
-                <div>
-                    <div className="text-end">
-                        <a href={imageResultUri} download={poll.title + ' - Result.jpeg'} target='_blank' className='btn btn-purple-secondary mb-2'>
-                            Download
-                        </a>
+                <div className="text-end">
+                    {/* <a href={imageResultUri} download={poll.title + ' - Result.jpeg'} target='_blank' className='btn btn-purple-secondary mb-2'>
+                        Download
+                    </a> */}
+                    <LoadingButton loading={generatingPdf} onClick={downloadResult} variant="purple-secondary" className="mb-3" spinnerVariant="light" type='button'>
+                        Download
+                        <i className=' bx bx-download ms-2'></i>
+                    </LoadingButton>
+                </div>
+                <div id='poll-result'>
+                    <div className="card">
+                        <div className="card-body p-xl-4 px-3">
+                            <div className="row gy-4 align-items-center">
+                                <div className="col-12">
+                                    <div className='d-flex'>
+                                        <h1 className='fw-bold me-2'>
+                                            {poll.title}
+                                        </h1>
+                                        <div>
+                                            {
+                                                poll.status == 'Live' ? (
+                                                    <Badge bg='success'>Live <i className='bx bx-broadcast'></i></Badge>
+                                                ) : (
+                                                    <Badge bg='danger'>{poll.status}</Badge>
+                                                )
+                                            }
+                                        </div>
+                                    </div>
+                                    <p className=' fw-medium'>{poll.description}</p>
+                                </div>
+                                <div className="col-12">
+                                    <div className="row">
+                                        <div className="col-6">
+                                            <div className="border-end border-secondary px-1">
+                                                <div className="d-flex align-items-center">
+                                                    <div className='me-3'>
+                                                        <div className="circle-icon bg-purple-secondary bg-opacity-10 text-purple-secondary p-4">
+                                                            <i className=' bx bxs-user fs-5'></i>
+                                                        </div>
+                                                    </div>
+                                                    <div className=' text-center'>
+                                                        <p className="my-0 text-start text-dark fw-medium">No of voters</p>
+                                                        <p className="my-0  text-start">{poll.participants?.length}</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div className="col-6">
+                                            <div className=" px-1">
+                                                <div className="d-flex align-items-center">
+                                                    <div className='me-3'>
+                                                        {/* <Image src={VotersImage} fluid /> */}
+                                                        <div className="circle-icon bg-primary bg-opacity-10 text-primary p-4">
+                                                            <i className=' bx bx-check fs-3'></i>
+                                                        </div>
+                                                    </div>
+                                                    <div className=' text-center'>
+                                                        <p className="my-0 text-start text-dark fw-medium">Already voted</p>
+                                                        <p className="my-0  text-start">{votedCount()}</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
                     </div>
-                    <div className=' text-center'>
-                        <Image fluid src={imageResultUri} className='' />
+
+                    <div className="mt-3">
+                        {
+                            optionColors.length > 0 && poll && poll.option_groups.map((pollGroup, index) => {
+                                var option = pollGroup.options[getMostVotedIndex(pollGroup)];
+                                return (
+                                    <div key={index}>
+                                        <div className='card bg-dark p-xl-3 p-3 voting-card rounded-0' >
+                                            <div className="card-body text-light p-3 p-xl-4">
+                                                <h4 className='fw-bold'>{pollGroup.title}</h4>
+                                                <div>
+                                                    <p className=' text-white-50 mt-0 mb-2 fw-medium'>Most voted:</p>
+                                                    {
+                                                        pollGroup.type.toLowerCase() == 'text only' ? (
+                                                            <div className="row ">
+                                                                <div className="col-lg align-self-end">
+                                                                    {/* option */}
+                                                                    <div className="option-item p-3 rounded-2 statistics mb-3" >
+                                                                        <div className="row">
+                                                                            <div className="col">
+                                                                                <div className="h-100 ">
+                                                                                    <p className="fs-5 my-1 text-light">{option.name}</p>
+                                                                                    <div className="vote-line-statistics py-1 rounded-pill my-0" style={{ width: `${votePercentage(option) == 0 ? 1 : votePercentage(option)}%`, backgroundColor: getOptionColor(option) }}>
+                                                                                    </div>
+                                                                                    <p className='my-0'><small>{getVoteCount(option)} {getVoteCount(option) > 1 ? 'votes' : 'vote'}</small></p>
+
+                                                                                </div>
+                                                                            </div>
+                                                                            <div className="col-auto align-self-end">
+                                                                                <p className="my-0">{votePercentage(option)}%</p>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    {/* option */}
+                                                                </div>
+                                                            </div>
+                                                        ) : (
+                                                            <div className="row align-items-end gy-3">
+                                                                <div className="col-xl">
+                                                                    <div className="row">
+                                                                        {/* option */}
+                                                                        <div className="col-12">
+                                                                            <div className="option-item with-image p-3 statistics mb-3">
+                                                                                <div className="row gx-2">
+                                                                                    <div className="col h-100">
+                                                                                        <div className="row gx-lg-3 gx-1 gy-2 align-items-center">
+                                                                                            <div className="col-md-auto text-center h-100 d-flex justify-content-center align-items-center">
+                                                                                                <div className="border-lg-end pe-2 border-secondary image-wrapper">
+                                                                                                    <Image thumbnail fluid src={option.image} />
+                                                                                                </div>
+                                                                                            </div>
+                                                                                            <div className="col h-100 align-self-baseline ">
+                                                                                                <div className="h-100 mx-2">
+                                                                                                    <p className="fs-5 my-1 text-light">{option.name}</p>
+                                                                                                    <p className="fs-6 fw-light mb-3 my-1 text-light">{option.description}</p>
+                                                                                                    <div className="vote-line-statistics py-1 rounded-pill my-0" style={{ width: `${votePercentage(option) == 0 ? 1 : votePercentage(option)}%`, backgroundColor: getOptionColor(option) }}>
+                                                                                                    </div>
+                                                                                                    <p bg='secondary' className='my-0 text-light'><small>{getVoteCount(option)} {getVoteCount(option) > 1 ? 'votes' : 'vote'}</small></p>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div className="col-auto align-self-end ">
+                                                                                        <p className="my-0">{votePercentage(option)}%</p>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        {/* option */}
+                                                                    </div>
+                                                                </div>
+
+                                                            </div>
+                                                        )
+                                                    }
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                )
+                            })
+                        }
                     </div>
                 </div>
             </ModalComponent>
             <section className="voters-poll fw-bolder fs-inter">
-                <div className="bg-purple-secondary w-100 ">
+                <div className="bg-dark w-100 ">
                     <div className="container py-3 d-flex justify-content-center align-items-end">
                         <h3 className='my-3 text-light fw-bolder text-uppercase text-center me-2'>
                             Poll Result
@@ -226,7 +389,7 @@ const Result = ({ auth, poll, votes }) => {
 
                     </div>
                     {/* poll result container */}
-                    <div id='poll-result'>
+                    <div >
                         <div className="card">
                             <div className="card-body p-xl-4 px-3">
                                 <div className="row gy-4 align-items-center">

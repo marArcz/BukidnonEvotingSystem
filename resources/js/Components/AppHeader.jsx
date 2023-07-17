@@ -1,15 +1,15 @@
 import React, { useState } from 'react'
 import { Container, Image, Nav, Navbar, NavDropdown } from 'react-bootstrap'
-import AppLogo from '../../images/app-logo.png'
+import AppLogo from '../../images/evote-logo.png'
 import MenuIcon from '../../images/menu.png';
 import { Link } from '@inertiajs/react';
 
-const AppHeader = ({ auth, removeShadow = false }) => {
+const AppHeader = ({ auth, removeShadow = false,bg='white',variant }) => {
 
     const [expanded, setExpanded] = useState(false)
 
     return (
-        <Navbar onToggle={(expanded) => setExpanded(expanded)} bg='white' expand='lg' fixed='top' className={`${removeShadow ? '' : 'shadow'} py-3 `}>
+        <Navbar onToggle={(expanded) => setExpanded(expanded)} bg={expanded?'white':bg} variant={expanded?'light':variant} expand='lg' fixed='top' className={`${removeShadow ? '' : 'shadow'} py-2 `}>
             <Container className=' align-middle align-items-center '>
                 <Navbar.Brand href={route('home')}>
                     <Image fluid src={AppLogo} className='navbar-logo' />
@@ -27,22 +27,22 @@ const AppHeader = ({ auth, removeShadow = false }) => {
                     <Nav className="ms-auto">
                         {
                             auth?.user ? (
-                                <Nav.Link className='text-uppercase mx-lg-3 fs-6 link-dark' as={Link} href={route('dashboard')}>Dashboard</Nav.Link>
+                                <Nav.Link className='text-uppercase mx-lg-3 fs-6' as={Link} href={route('dashboard')}>Dashboard</Nav.Link>
                             ) : (
-                                <Nav.Link className='text-uppercase mx-lg-3 fs-6 link-dark' as={Link} href="/">Home</Nav.Link>
+                                <Nav.Link className='text-uppercase mx-lg-3 fs-6' as={Link} href="/">Home</Nav.Link>
                             )
                         }
-                        <Nav.Link className='text-uppercase mx-lg-3 fs-6 link-dark' as={Link} href={route('about')}>About</Nav.Link>
-                        <Nav.Link className='text-uppercase mx-lg-3 fs-6 link-dark' as={Link} href={route('contact')}>Contact</Nav.Link>
+                        <Nav.Link className='text-uppercase mx-lg-3 fs-6' as={Link} href={route('about')}>About</Nav.Link>
+                        <Nav.Link className='text-uppercase mx-lg-3 fs-6' as={Link} href={route('contact')}>Contact</Nav.Link>
 
                         {
                             auth?.user ? (
                                 <>
-                                    <Nav.Link className='text-uppercase mx-lg-2 fs-6 link-dark' as={Link} href={route('profile')}>Profile</Nav.Link>
-                                    <Nav.Link className='text-uppercase mx-lg-2 fs-6 link-dark' method='post' as={Link} href={route('logout')}>Log out</Nav.Link>
+                                    <Nav.Link className='text-uppercase mx-lg-2 fs-6' as={Link} href={route('profile')}>Profile</Nav.Link>
+                                    <Nav.Link className='text-uppercase mx-lg-2 fs-6' method='post' as={Link} href={route('logout')}>Log out</Nav.Link>
                                 </>
                             ) : (
-                                <Nav.Link className='text-uppercase mx-lg-3 fs-6 link-dark' as={Link} href={route('login')}>Login</Nav.Link>
+                                <Nav.Link className='text-uppercase mx-lg-3 fs-6' as={Link} href={route('login')}>Login</Nav.Link>
                             )
                         }
                     </Nav>

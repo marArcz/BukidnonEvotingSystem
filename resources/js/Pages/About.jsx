@@ -2,13 +2,13 @@ import AppLayout from '@/Layouts/AppLayout'
 import { Head } from '@inertiajs/react'
 import React from 'react'
 import { Image } from 'react-bootstrap'
-import ImageVoting from '../../images/voting (2).png'
+import ImageVoting from '../../images/voting-dark.png'
 const About = ({ auth }) => {
     return (
         <AppLayout auth={auth} noBg>
             <Head title='About' />
             <section className="voters-poll fw-bolder fs-inter">
-                <div className="bg-purple-secondary w-100 ">
+                <div className="bg-dark w-100 ">
                     <div className="container py-3 d-flex justify-content-center align-items-end">
                         <h3 className='my-2 text-light fw-bolder text-center me-2'>
                             About Us
@@ -24,7 +24,9 @@ const About = ({ auth }) => {
                         </div>
                         <div className="col-md">
                             <h2 className=' text-uppercase fw-bold'>Bukidnon classic custom voting system</h2>
-                            <p className='fw-medium fs-5 mt-3'>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. </p>
+                            <p className='fw-medium fs-5 mt-3'>
+                                A group of like minded people driven to a passion for retro style motorcycle, custom culture and cafe racing.
+                            </p>
                         </div>
                     </div>
                 </div>

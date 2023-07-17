@@ -19,7 +19,7 @@ const Poll = ({ auth, poll, participant, session }) => {
         <AppLayout auth={auth} noBg >
             <Head title={poll.title} />
             <section className="voters-poll fw-bolder fs-inter">
-                <div className="bg-purple-secondary w-100 ">
+                <div className="bg-dark w-100 ">
                     <div className="container py-3 d-flex justify-content-center align-items-end">
                         <h3 className='my-3 text-light fw-bolder text-center me-2'>
                             ONLINE VOTING

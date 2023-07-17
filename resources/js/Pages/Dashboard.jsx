@@ -57,7 +57,7 @@ export default function Dashboard({ auth, polls, session }) {
 
 
     return (
-        <AppLayout auth={auth} >
+        <AppLayout noBg auth={auth} >
             <Head title="Dashboard" />
             <ModalComponent backdrop={isProcessing ? 'static' : "backdrop"} show={showJoinModal} handleClose={() => setShowJoinModal(false)} title="Join Poll">
                 <form onSubmit={onJoinSubmit}>
@@ -78,7 +78,7 @@ export default function Dashboard({ auth, polls, session }) {
                 </form>
             </ModalComponent>
             <section className="dashboard">
-                <div className=" bg-purple-secondary section-header w-100 ">
+                <div className=" bg-dark section-header w-100 ">
                     <div className="container pt-4 pb-2 pb-25 d-flex justify-content-start align-items-center">
                         <h4 className='my-3 text-uppercase text-light fw-bolder text-center me-2'>
                             <i className=' bx bxs-dashboard'></i> Dashboard

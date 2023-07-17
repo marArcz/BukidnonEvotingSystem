@@ -13,7 +13,7 @@ const Contact = ({ auth }) => {
         <AppLayout auth={auth} noBg>
             <Head title='Contact Us' />
             <section className="voters-poll fw-bolder fs-inter">
-                <div className="bg-purple-secondary w-100 ">
+                <div className="bg-dark w-100 ">
                     <div className="container py-3 d-flex justify-content-center align-items-end">
                         <h3 className='my-2 text-light fw-bolder text-center me-2'>
                             Contact Us
@@ -24,7 +24,7 @@ const Contact = ({ auth }) => {
                     <div className="row gy-5 h-100 align-items-baseline mt-xl-2 mt-2 pt-3">
                         <div className="col-md">
                             <h3 className='fw-bold text-uppercase'><i className=' bx bxs-map-pin'></i> Address</h3>
-                            <p className='fw-medium fs-5'>Bukidnon, Philippines</p>
+                            <p className='fw-medium fs-5'>Malaybalay city, Bukidnon, Philippines</p>
                         </div>
                         <div className="col-md">
                             <h3 className='fw-bold text-uppercase'><i className=' bx bxs-envelope'></i> Email</h3>
@@ -32,12 +32,12 @@ const Contact = ({ auth }) => {
                         </div>
                         <div className="col-md">
                             <h3 className='fw-bold text-uppercase'><i className=' bx bxs-phone'></i> Phone</h3>
-                            <p className='fw-medium fs-5'>+639123456789</p>
+                            <p className='fw-medium fs-5'>+639363012979</p>
                         </div>
                         <div className="col-md">
                             <h3 className='fw-bold text-uppercase'>Social Media</h3>
-                            <p className='fw-medium fs-5'><i className=' bx bxl-facebook'></i> evote.facebook.com</p>
-                            <p className='fw-medium fs-5'><i className=' bx bxl-twitter'></i> evote.instagram.com</p>
+                            <p className='fw-medium fs-5'><i className=' bx bxl-facebook'></i> BCC.facebook.com</p>
+                            <p className='fw-medium fs-5'><i className=' bx bxl-twitter'></i> BCC.instagram.com</p>
                         </div>
                     </div>
                     <div className="row mt-4 justify-content-center">
@@ -71,7 +71,7 @@ const Contact = ({ auth }) => {
                                 </div>
 
                                 <div className="text-end mt-3">
-                                    <Button size='lg' variant='purple-secondary' type='submit'>Send Message</Button>
+                                    <Button size='lg' variant='dark' type='submit'>Send Message</Button>
                                 </div>
                             </form>
                         </div>

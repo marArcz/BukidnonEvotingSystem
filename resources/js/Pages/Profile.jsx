@@ -103,7 +103,7 @@ const Profile = ({ auth, profile }) => {
             <PhotoUploader closeOnComplete show={showImageUploader} handleClose={() => setShowImageUploader(false)} onCompleted={onProfilePicChanged} />
             <Head title='Profile' />
             <section className='profile-section'>
-                <div className="bg-purple-secondary section-header w-100 ">
+                <div className="bg-dark section-header w-100 ">
                     <div className="container pt-4 pb-2 pb-25 d-flex justify-content-start align-items-center">
                         <h4 className='my-3 text-capitalize text-light fw-bolder text-center me-2'>
                             Account Profile
@@ -183,7 +183,7 @@ const Profile = ({ auth, profile }) => {
                                             <div className="d-flex align-items-center">
                                                 <p className='my-1'>Polls joined</p>
                                                 <div className='ms-auto'>
-                                                    <Badge title='3' bg='danger'>{profile?.polls_created || 0}</Badge>
+                                                    <Badge title='3' bg='danger'>{profile?.polls_joined || 0}</Badge>
                                                 </div>
                                             </div>
                                         </ListGroup.Item>

@@ -9,7 +9,7 @@ import { Button, Form, Image, Spinner } from 'react-bootstrap';
 import AppLayout from '@/Layouts/AppLayout';
 import AppBgOverlay from '@/Components/AppBgOverlay';
 import Footer from '@/Components/Footer';
-import VotingImage from '../../../images/voting (2).png';
+import VotingImage from '../../../images/voting-dark.png';
 import ImageExt from '../../../images/dark-ext.png'
 export default function Register({ auth }) {
     const { data, setData, post, processing, errors, reset } = useForm({
@@ -181,7 +181,7 @@ export default function Register({ auth }) {
                                             />
                                         </div>
                                         <div className="d-grid mb-3">
-                                            <Button type='submit' variant='blue' size='lg' disabled={processing}>
+                                            <Button type='submit' variant='dark' size='lg' disabled={processing}>
                                                 Register
                                                 {processing && (
                                                     <Spinner

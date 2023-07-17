@@ -79,7 +79,7 @@ const PasswordForm = ({
                         loading={changingPassword}
                         spinnerVariant="dark"
                         type="submit"
-                        variant="purple-secondary"
+                        variant="dark"
                         size="sm"
                     >
                         Change Password

@@ -17,7 +17,7 @@ const MyVote = ({ auth, poll, votes }) => {
         <AppLayout noBg auth={auth}>
             <Head title={poll.title} />
             <section className="voters-poll fw-bolder fs-inter">
-                <div className="bg-purple-secondary w-100 ">
+                <div className="bg-dark w-100 ">
                     <div className="container pt-4 pb-3 d-flex justify-content-center align-items-end">
                         <h3 className='my-3 text-light fw-bolder text-uppercase text-center me-2'>
                             Online Voting

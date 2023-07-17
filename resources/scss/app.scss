@@ -98,7 +98,7 @@ section {
 }
 
 .login-form {
-    padding-top: 90px;
+    padding-top: 100px;
     box-sizing: border-box;
 
     @media screen and (max-width:768px) {
@@ -165,7 +165,8 @@ section {
     }
 
     &.hero {
-        min-height: 90vh !important;
+        background-image: url('../images/riders-bg.png');
+        min-height: 100vh !important;
     }
 
     .content {
@@ -202,7 +203,7 @@ section {
 
 .navbar {
     .navbar-logo {
-        width: 180px;
+        width: 70px;
     }
 }
 
@@ -384,7 +385,7 @@ section {
             $size: 15px;
             width: $size;
             height: $size;
-            background: $light-purple;
+            background: $dark;
 
             &:nth-child(2),
             &:nth-child(3) {
@@ -397,11 +398,11 @@ section {
             transform: rotate(180deg);
 
             div {
-                background: $light-purple !important;
+                background: $dark !important;
 
                 &:nth-child(2),
                 &:nth-child(3) {
-                    border: 1px solid $light-purple !important;
+                    border: 1px solid $dark !important;
                 }
             }
         }
@@ -751,7 +752,7 @@ a.dropdown-toggler {
 
     .navbar {
         .navbar-logo {
-            width: 150px !important;
+            width: 50px !important;
         }
 
         padding-top:10px !important;

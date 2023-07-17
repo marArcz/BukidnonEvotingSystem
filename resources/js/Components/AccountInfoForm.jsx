@@ -56,7 +56,7 @@ const AccountInfoForm = ({onInfoSave,data,setData,resetInfo}) => {
                 <br />
                 <div className="text-end">
                     <button className='btn btn-secondary btn-sm rounded-1 me-2' onClick={resetInfo} type='button'>Reset</button>
-                    <button className='btn btn-purple-secondary btn-sm rounded-1' type='submit'>Save Changes</button>
+                    <button className='btn btn-dark btn-sm rounded-1' type='submit'>Save Changes</button>
                 </div>
             </form>
         </div>

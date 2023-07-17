@@ -29,7 +29,7 @@ class HomeController extends Controller
         $user = $request->user();
         $polls = Poll::select('id')->whereIn('id',Participants::select('poll_id')->where('user_id',$user->id))->orWhere('user_id',$user->id);
 
-        $data['polls'] = Poll::with(['option_groups','participants','poll_code'])->whereIn('id',$polls)->where('is_deleted',false)->get();
+        $data['polls'] = Poll::with(['option_groups','participants','poll_code'])->whereIn('id',$polls)->where('is_deleted',false)->orderByDesc('id')->get();
         $data['session'] = [
             'success' => session('success'),
             'error' => session('error'),
@@ -64,7 +64,7 @@ class HomeController extends Controller
     public function profile(Request $request){
         $user = $request->user();
         //
-        $polls_created = Poll::where('user_id',$user->id)->count();
+    $polls_created = Poll::where('user_id',$user->id)->where('is_deleted',false)->count();
         $polls_joined = Participants::where('user_id',$user->id)->count();
 
         $data['profile'] = [

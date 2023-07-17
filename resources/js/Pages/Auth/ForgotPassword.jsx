@@ -8,7 +8,7 @@ import TextInput from '@/Components/TextInput';
 import { Head, Link, useForm } from '@inertiajs/react';
 import AppLayout from '@/Layouts/AppLayout';
 import { Alert, Button, Form, Image } from 'react-bootstrap';
-import VotingImage from '../../../images/voting (2).png';
+import VotingImage from '../../../images/voting-dark.png';
 import AppBgOverlay from '@/Components/AppBgOverlay';
 import ImageExt from '../../../images/dark-ext.png'
 
@@ -76,7 +76,7 @@ export default function ForgotPassword({ status }) {
                                     <InputError message={errors.email} className="mt-2" />
 
                                     <div className="d-grid">
-                                        <Button type='submit' variant='primary'n disabled={processing}>
+                                        <Button type='submit' variant='dark' disabled={processing}>
                                             Email Password Reset Link
                                         </Button>
                                     </div>

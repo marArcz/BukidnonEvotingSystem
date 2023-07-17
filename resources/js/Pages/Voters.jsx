@@ -8,12 +8,12 @@ const Voters = ({ auth, poll }) => {
 		<AppLayout auth={auth} noBg>
 			<Head title={poll.title + " | Voters"} />
 			<section>
-				<div className=" bg-purple-secondary w-100 py-4">
+				<div className=" bg-dark w-100 py-4">
 					<div className="container">
 						<div className="d-flex justify-content-center align-items-center">
 							<h3 className=' text-uppercase fw-bold me-2 text-light my-0'>Voters</h3>
 							<div>
-								<div className="circle-icon bg-light text-purple-secondary p-3">
+								<div className="circle-icon bg-light text-dark p-3">
 									<i className=' bx bxs-user fs-5'></i>
 								</div>
 							</div>

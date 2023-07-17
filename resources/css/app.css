@@ -68,7 +68,7 @@ section .bordered-bottom {
 }
 
 .login-form {
-  padding-top: 90px;
+  padding-top: 100px;
   box-sizing: border-box;
 }
 @media screen and (max-width: 768px) {
@@ -124,7 +124,8 @@ section {
   }
 }
 section.hero {
-  min-height: 90vh !important;
+  background-image: url("../images/riders-bg.png");
+  min-height: 100vh !important;
 }
 section .content {
   position: absolute;
@@ -151,7 +152,7 @@ section .content {
 }
 
 .navbar .navbar-logo {
-  width: 180px;
+  width: 70px;
 }
 
 .page-overlay.full .top,
@@ -288,7 +289,7 @@ section .content {
   transition: 400ms ease-in-out !important;
   width: 15px;
   height: 15px;
-  background: #7770FF;
+  background: #212529;
 }
 .navbar-toggler .menu-icon div:nth-child(2), .navbar-toggler .menu-icon div:nth-child(3) {
   background: transparent;
@@ -298,10 +299,10 @@ section .content {
   transform: rotate(180deg);
 }
 .navbar-toggler .menu-icon.expanded div {
-  background: #7770FF !important;
+  background: #212529 !important;
 }
 .navbar-toggler .menu-icon.expanded div:nth-child(2), .navbar-toggler .menu-icon.expanded div:nth-child(3) {
-  border: 1px solid #7770FF !important;
+  border: 1px solid #212529 !important;
 }
 
 .text-profile-pic {
@@ -586,7 +587,7 @@ a.dropdown-toggler {
     padding-bottom: 10px !important;
   }
   .navbar .navbar-logo {
-    width: 150px !important;
+    width: 50px !important;
   }
   .option-item img {
     width: 100px !important;

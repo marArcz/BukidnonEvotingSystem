@@ -176,7 +176,7 @@ const CreatePoll = ({ auth }) => {
                 <Head title='Create Poll' />
                 <CalendarModal handleClear={clearDeadline} show={showCalendar} handleClose={() => setShowCalendar(false)} handleSelect={onSelectDeadline} />
                 <section className="poll">
-                    <div className="bg-purple-secondary w-100 ">
+                    <div className="bg-dark w-100 ">
                         <div className="container py-4 d-flex justify-content-center align-items-center">
                             <h3 className='my-0 text-light text-uppercase fw-bolder text-center me-2'>
                                 Create POLL
@@ -198,7 +198,7 @@ const CreatePoll = ({ auth }) => {
                                             <i className='bx bx-arrow-back'></i>
                                         </button>
                                         <div className="text-dark">
-                                            <h5 className="text-center mb-3">Complete all the fields to create your poll.</h5>
+                                            {/* <h5 className="text-center mb-3">Complete all the fields to create your poll.</h5> */}
 
                                             <p className='text-cente text-dark-purple text-uppercase fs-5'>poll details</p>
                                         </div>
@@ -372,7 +372,7 @@ const CreatePoll = ({ auth }) => {
                                             <Link href={route('dashboard')} className="btn btn-secondary btn-lg col-12">Discard</Link>
                                         </div>
                                         <div className="col-md">
-                                            <button disabled={processing} className="btn btn-purple-secondary btn-lg col-12" type='submit'>
+                                            <button disabled={processing} className="btn btn-dark btn-lg col-12" type='submit'>
                                                 {
                                                     !processing ? (
                                                         <span>Create Poll</span>
